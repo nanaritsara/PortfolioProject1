@@ -94,3 +94,6 @@ WHERE Word_Counts IS NOT NULL
 GROUP BY Reading_Year
 
 -- A: 2.273.352 Words.
+
+
+
