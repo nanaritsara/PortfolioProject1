@@ -70,6 +70,7 @@ FROM `booklists.books_2019`
 GROUP BY Reading_Year
 -- BASED ON THE DATA AVAILABLE, THE AVERAGE NUMBER OF WORDS PER PAGE IS 228.
 
+
 /*
 SELECT SUM(Word_Counts)       -- (1014792) 
 FROM `booklists.books_2019`
@@ -81,6 +82,7 @@ WHERE Word_Counts IS NULL
 
 SELECT 1258560 + 1014792      -- (2273352)
 */
+
 
 SELECT Reading_Year, SUM(Word_Counts) + (
   SELECT (SUM(Page_Counts)*228) 
