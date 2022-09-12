@@ -1,0 +1,94 @@
+/* 
+DATA EXPLORATION: 2019
+
+SHOWCASE: Aggregate Functions, Keywords, Subqueries
+*/
+
+---------------------------------------------------------------------------
+-- Q: HOW MANY BOOKS HAVE I READ IN EACH LANGUAGE?
+
+SELECT DISTINCT Reading_Language
+FROM `booklists.books_2019`
+
+SELECT Reading_Language, COUNT(Book_Title) AS Book_Counts
+FROM `booklists.books_2019`
+GROUP BY Reading_Language
+
+
+---------------------------------------------------------------------------
+-- Q: WHICH ARE THE SMALLEST AND LARGEST BOOKS I HAVE READ?
+
+SELECT Book_Title, Page_Counts
+FROM `booklists.books_2019`
+ORDER BY Page_Counts
+
+SELECT MIN(Page_Counts) AS Smallest, MAX(Page_Counts) AS Largest  -- 106, 592
+FROM `booklists.books_2019`
+
+SELECT Book_Author, Book_Title, Page_Counts 
+FROM `booklists.books_2019`
+WHERE Page_Counts IN (106, 592)
+ORDER BY Page_Counts
+
+
+---------------------------------------------------------------------------
+-- Q: WHAT IS THE AVERAGE NUMBER OF PAGES I HAVE READ IN A YEAR? 
+
+SELECT Reading_Year, AVG(Page_Counts) AS AVG_Pages   
+FROM `booklists.books_2019`
+GROUP BY Reading_Year
+-- OR
+SELECT Reading_Year, ROUND(SUM(Page_Counts)/MAX(Reading_Order)) AS AVG_Pages
+FROM `booklists.books_2019`
+GROUP BY Reading_Year
+
+-- A: 286
+
+
+---------------------------------------------------------------------------
+-- Q: HOW MANY WORDS HAVE I READ IN A YEAR? 
+
+SELECT COUNT(Word_Counts) WithWordCounts    -- 14 ROWS HAVE DATA OF WORD COUNTS.
+FROM `booklists.books_2019`
+WHERE Word_Counts IS NOT NULL
+
+
+SELECT Book_Title, Page_Counts, Word_Counts,
+  ROUND(Word_Counts/Page_Counts) WordsPerPage
+FROM `booklists.books_2019`
+WHERE Word_Counts IS NOT NULL
+ORDER BY 4
+
+
+SELECT Reading_Year, 
+  ROUND(SUM(Word_Counts/Page_Counts)/COUNT(Word_Counts)) Avg_WordsPerPage  
+FROM `booklists.books_2019`
+GROUP BY Reading_Year
+-- OR
+SELECT Reading_Year, CAST(AVG(Word_Counts/Page_Counts) AS INT) Avg_WordsPerPage   
+FROM `booklists.books_2019`
+GROUP BY Reading_Year
+-- BASED ON THE DATA AVAILABLE, THE AVERAGE NUMBER OF WORDS PER PAGE IS 228.
+
+/*
+SELECT SUM(Word_Counts)       -- (1014792) 
+FROM `booklists.books_2019`
+WHERE Word_Counts IS NOT NULL
+
+SELECT (SUM(Page_Counts)*228) -- (1258560)
+FROM `booklists.books_2019`
+WHERE Word_Counts IS NULL 
+
+SELECT 1258560 + 1014792      -- (2273352)
+*/
+
+SELECT Reading_Year, SUM(Word_Counts) + (
+  SELECT (SUM(Page_Counts)*228) 
+  FROM `booklists.books_2019`
+  WHERE Word_Counts IS NULL 
+  ) AS TotalWords
+FROM `booklists.books_2019`
+WHERE Word_Counts IS NOT NULL
+GROUP BY Reading_Year
+
+-- A: 2.273.352 Words.
