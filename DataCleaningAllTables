@@ -1,0 +1,229 @@
+/*
+DATA CLEANING: ALL TABLES
+
+SHOWCASE: String Functions,
+*/
+
+---------------------------------------------------------------------------
+-- Concerning BOOK TITLES;
+
+SELECT Book_Author, Book_Title, Alternative_Title, Original_Title     
+FROM `booklists.books_2019`
+WHERE Book_Author = "Haruki Murakami"
+
+-- "After The Quake" | 'THE' WAS NOT SUPPOSED TO BE IN UPPERCASE.
+
+UPDATE `booklists.books_2019`
+SET Book_Title = "After the Quake"
+WHERE Book_Author = "Haruki Murakami"
+
+UPDATE `booklists.books_2019`
+SET Alternative_Title = CONCAT("After ", LOWER(SUBSTR(Book_Title, 7, 3)), " Quake: Stories")
+WHERE Book_Author = "Haruki Murakami"
+
+---------- 
+
+SELECT Book_Author, Book_Title, Alternative_Title, Original_Title   
+FROM `booklists.books_2019`
+WHERE Book_Author = "Dan Brown"
+
+-- "Robert Landon" | 'LANGDON' WAS SPELLED WITHOUT G.
+
+UPDATE `booklists.books_2019`
+SET Alternative_Title = "Robert Langdon, Book 1"
+WHERE Book_Author = "Dan Brown"
+
+---------- 
+
+SELECT Book_Author, Book_Title, Alternative_Title, Original_Title
+FROM `booklists.books_2019`
+WHERE Book_Author = "J. K. Rowling"
+ORDER BY Book_Title
+
+-- "The Tales of Beedle The Bard" | 'THE' WAS NOT SUPPOSED TO BE IN UPPERCASE.
+
+SELECT Book_Author, Book_Title
+FROM `booklists.books_2019`
+WHERE Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"
+
+UPDATE `booklists.books_2019`
+SET Book_Title = (
+  SELECT 
+    REPLACE(Book_Title, (
+      SELECT SUBSTR(Book_Title, -8, 5)
+      FROM `booklists.books_2019`
+      WHERE Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"), "the B")
+  FROM `booklists.books_2019`
+  WHERE Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%")
+WHERE Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"
+
+-- "Harry Potter, Book 1" SHOULD BE IN THE LEADING POSITION.
+
+UPDATE `booklists.books_2019`
+SET Alternative_Title = "Harry Potter, Book 1; Harry Potter and the Sorcerer's Stone"
+WHERE Book_Author = "J. K. Rowling" AND Book_Title LIKE "%Stone%"
+
+---------- 
+
+SELECT Book_Author, Book_Title, Alternative_Title, Original_Title
+FROM `booklists.books_2020`
+WHERE Book_Author LIKE "%Hemingway" OR Book_Title LIKE "%Grinch%"
+
+-- "The Old Man and The Sea", "How The Grinch Stole Christmas!" | 'THE' WAS NOT SUPPOSED TO BE IN UPPERCASE.
+
+UPDATE `booklists.books_2020` 
+SET Book_Title = "The Old Man and the Sea",
+    Original_Title = "The Old Man and the Sea"
+WHERE Book_Author LIKE "%Hemingway"
+
+UPDATE `booklists.books_2020` 
+SET Book_Title = "How the Grinch Stole Christmas!",
+    Original_Title = "How the Grinch Stole Christmas!"
+WHERE Book_Title LIKE "%Grinch%"
+
+---------- 
+
+SELECT Book_Author, Book_Title, Alternative_Title, Original_Title
+FROM `booklists.books_2020`
+WHERE Reading_Order IN (23, 25)
+ORDER BY Reading_Order
+
+/* "The Seven Spiritual Law of Success", "One Hundred Year of Solitude"
+   'YEAR' AND 'LAW' SHOULD BE PLURAL. */
+
+UPDATE `booklists.books_2020` 
+SET Book_Title = (SELECT 
+      REPLACE("The Seven Spiritual Law of Success", "Law", "Laws")
+      FROM `booklists.books_2020`
+      WHERE Book_Title LIKE "%Law%"),
+    Original_Title = (SELECT 
+      REPLACE("The Seven Spiritual Law of Success", "Law", "Laws")
+      FROM `booklists.books_2020`
+      WHERE Original_Title LIKE "%Law%")
+WHERE Book_Title LIKE "%Law%" OR Original_Title LIKE "%Law%"
+
+/*
+SELECT INSTR(Book_Title, "Year") AS Position
+FROM `booklists.books_2020`
+WHERE Reading_Order = 25
+
+APPARENTLY, BigQuery DOES NOT RECOGNIZE CHARINDEX() AND INSERT().
+*/
+
+UPDATE `booklists.books_2020` 
+SET Book_Title = "One Hundred Years of Solitude"
+WHERE Reading_Order = 25
+
+---------- 
+
+SELECT Book_Author, Book_Title, Alternative_Title, Original_Title
+FROM `booklists.books_2021`
+WHERE Book_Title LIKE "%Duke%" OR   
+      Book_Title LIKE "Stillness%" OR
+      Book_Title LIKE "%Crawdads%" OR
+      Book_Title LIKE  "Turtles%"
+
+/* "Stillness Is The Key", "Where The Crawdads Sing", "Turtles All The Way Down"  
+   'THE' WAS NOT SUPPOSED TO BE IN UPPERCASE. */
+
+SELECT REPLACE(Book_Title, "The", "the") AS Corrected_Titles
+FROM `booklists.books_2021`
+WHERE Book_Title LIKE "Stillness%" OR
+      Book_Title LIKE "%Crawdads%" OR
+      Book_Title LIKE  "Turtles%"
+
+UPDATE `booklists.books_2021`
+SET Book_Title = "Stillness Is the Key",
+    Original_Title = "Stillness Is the Key"
+WHERE Book_Title LIKE "Stillness%" 
+
+UPDATE `booklists.books_2021`
+SET Book_Title = "Where the Crawdads Sing",
+    Original_Title = "Where the Crawdads Sing"
+WHERE Book_Title LIKE "%Crawdads%"
+
+UPDATE `booklists.books_2021`
+SET Book_Title = "Turtles All the Way Down",
+    Original_Title = "Turtles All the Way Down"
+WHERE Book_Title LIKE "Turtles%" 
+
+-- "The Duke And I" | 'AND' WAS NOT SUPPOSED TO BE IN UPPERCASE. 
+
+UPDATE `booklists.books_2021` 
+SET Book_Title = (
+    SELECT Original_Title
+    FROM `booklists.books_2021`
+    WHERE Book_Title LIKE "%Duke%")    
+WHERE Book_Title LIKE "%Duke%"    
+
+
+---------- 
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------
+-- Concerning AUTHORS' COUNTRY OF ORIGIN;
+
+SELECT Author_From, COUNT(Author_From) AS Amount  -- "BRAZIL" APPEARED TWICE.
+FROM `booklists.books_2018`
+GROUP BY Author_From
+ORDER BY Amount DESC
+
+SELECT TRIM(Author_From)
+FROM `booklists.books_2018`
+--OR
+UPDATE `booklists.books_2018`
+SET Author_From = "Brazil"
+WHERE Book_Author = "Paulo Coelho" 
+
+---------- 
+
+SELECT Author_From, COUNT(Author_From) AS Amount  -- 1 ROW MISTAKENLY SHOWED AN ETHNICITY.
+FROM `booklists.books_2019`
+GROUP BY Author_From
+ORDER BY Amount DESC
+
+SELECT *
+FROM `booklists.books_2019`
+WHERE Author_From = "African American"
+
+UPDATE `booklists.books_2019`
+SET Author_From = "United Stetes"
+WHERE Author_From = "African American"
+
+----------
+
+SELECT Author_From, COUNT(Author_From) AS Amount    -- 1 ROW MISTAKENLY SHOWED ANOTHER BOOK TITLE. 
+FROM `booklists.books_2021`
+GROUP BY Author_From
+ORDER BY Amount DESC
+
+SELECT *
+FROM `booklists.books_2021`
+WHERE Author_From = "Stillness Is The Key"
+
+UPDATE `booklists.books_2021`
+SET Author_From = "United States"
+WHERE Author_From = "Stillness Is The Key" 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
