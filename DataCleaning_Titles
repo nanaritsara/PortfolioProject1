@@ -116,7 +116,7 @@ SET      Book_Title =
          (SELECT REPLACE("The Seven Spiritual Law of Success", "Law", "Laws")
           FROM `booklists.books_2020`
           WHERE Original_Title LIKE "%Law%")
-WHERE     Book_Title LIKE "%Law%" OR Original_Title LIKE "%Law%"
+WHERE    Book_Title LIKE "%Law%" OR Original_Title LIKE "%Law%"
 
 /*
 SELECT INSTR(Book_Title, "Year") AS Position
