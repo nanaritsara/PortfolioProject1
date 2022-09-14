@@ -63,8 +63,8 @@ SET      Book_Title =
               FROM `booklists.books_2019`
               WHERE Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"), 
               "the B")
-         FROM `booklists.books_2019`
-         WHERE Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%")
+          FROM `booklists.books_2019`
+          WHERE Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%")
 WHERE Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"
 
 
