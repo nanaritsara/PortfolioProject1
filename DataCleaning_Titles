@@ -2,41 +2,42 @@
 DATA CLEANING: BOOK TITLES
 */
 
+
 ---------------------------------------------------------------------------
 -- 2019
 ---------------------------------------------------------------------------
 
 
-SELECT  Book_Author, Book_Title, Alternative_Title, Original_Title     
-FROM    `booklists.books_2019`
-WHERE   Book_Author = "Haruki Murakami"
+SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title     
+FROM     `booklists.books_2019`
+WHERE    Book_Author = "Haruki Murakami"
 
 -- "After The Quake" | 'THE' SHOULD BE WRITTEN IN LOWERCASE.
 -- ↓
 
-UPDATE  `booklists.books_2019`
-SET     Book_Title = "After the Quake"
-WHERE   Book_Author = "Haruki Murakami"
+UPDATE   `booklists.books_2019`
+SET      Book_Title = "After the Quake"
+WHERE    Book_Author = "Haruki Murakami"
 
-UPDATE  `booklists.books_2019`
-SET     Alternative_Title = 
-        CONCAT("After ", 
-               LOWER(SUBSTR(Book_Title, 7, 3)), 
-               " Quake: Stories")
-WHERE   Book_Author = "Haruki Murakami"
+UPDATE   `booklists.books_2019`
+SET      Alternative_Title = 
+         CONCAT("After ", 
+                LOWER(SUBSTR(Book_Title, 7, 3)), 
+                " Quake: Stories")
+WHERE    Book_Author = "Haruki Murakami"
 
 
 ---------------------------------------------------------------------------
 
 
-SELECT  Book_Author, Book_Title, Alternative_Title, Original_Title   
-FROM    `booklists.books_2019`
-WHERE   Book_Author = "Dan Brown"
+SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title   
+FROM     `booklists.books_2019`
+WHERE    Book_Author = "Dan Brown"
 
 -- "Robert Landon" | 'LANDON' SHOULD BE SPELLED WITH 'G'.
 -- ↓
 
-UPDATE  `booklists.books_2019`
+UPDATE   `booklists.books_2019`
 SET      Alternative_Title = "Robert Langdon, Book 1"
 WHERE    Book_Author = "Dan Brown"
 
