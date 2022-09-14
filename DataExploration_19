@@ -1,0 +1,89 @@
+/* 
+DATA EXPLORATION: 2019
+
+SHOWCASE: AGGREGATE FUNCTIONS, STRING FUNCTIONS, SUBQUERIES;
+*/
+
+
+---------------------------------------------------------------------------
+
+
+ALTER TABLE   `booklists.books_2019`
+RENAME COLUMN Author_Sex TO Author_Gender
+            
+ALTER TABLE   `booklists.books_2019`
+RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
+
+
+---------------------------------------------------------------------------
+-- {Q: What is the average number of pages I read in a year?} 
+
+SELECT   Reading_Year, AVG(Page_Counts) AS Average_Pages 
+FROM    `booklists.books_2019`
+GROUP BY Reading_Year
+
+/*
+{A: 286 pages.}
+
+SELECT   Reading_Year, ROUND(SUM(Page_Counts)/MAX(Reading_Order)) AS Average_Pages 
+FROM     `booklists.books_2019`
+GROUP BY Reading_Year
+*/
+
+
+
+
+
+---------------------------------------------------------------------------
+-- {Q: Based on the data available, how many words have I read in a year?}
+
+SELECT   COUNT(Word_Counts), MAX(Reading_Order)
+FROM     `booklists.books_2019`
+WHERE    Word_Counts IS NOT NULL
+
+-- {A: 14 out of 33 rows provide data of word counts.}
+
+
+SELECT   Book_Title, Page_Counts, Word_Counts,
+         ROUND(Word_Counts/Page_Counts) Average_Per_Page
+FROM     `booklists.books_2019`
+WHERE    Word_Counts IS NOT NULL
+ORDER BY 4
+
+
+SELECT   ROUND(SUM(Word_Counts/Page_Counts)/COUNT(Word_Counts)) Average_Per_Page  
+FROM     `booklists.books_2019`
+
+/*
+{A: The average number of words per page is 228.
+
+SELECT   CAST(AVG(Word_Counts/Page_Counts) AS INT) Average_Per_Page   
+FROM `booklists.books_2019`
+*/
+
+SELECT   Reading_Year, 
+         SUM(Word_Counts) +
+         (SELECT  (SUM(Page_Counts)*228) 
+          FROM    `booklists.books_2019`
+          WHERE   Word_Counts IS NULL) AS Total_Words
+FROM     `booklists.books_2019`
+WHERE    Word_Counts IS NOT NULL
+GROUP BY Reading_Year
+
+-- {A: 2.273.352 words.}
+
+/*
+SELECT   SUM(Word_Counts) AS Records          -- {A: 1014792}       
+FROM     `booklists.books_2019`
+WHERE    Word_Counts IS NOT NULL
+
+SELECT   (SUM(Page_Counts)*228) AS No_Records -- {A: 1258560} 
+FROM     `booklists.books_2019`
+WHERE    Word_Counts IS NULL 
+
+SELECT   1258560 + 101479                     -- {A: 2273352} 
+*/
+
+
+
+
