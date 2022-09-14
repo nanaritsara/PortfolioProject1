@@ -4,9 +4,37 @@ DATA CLEANING: BOOK TITLES
 
 
 ---------------------------------------------------------------------------
--- 2019
+-- 2018
 ---------------------------------------------------------------------------
 
+SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title, Movie_Adaptation_Seen      
+FROM     `booklists.books_2018`
+WHERE    Book_Author = "John Green" AND Movie_Adaptation_Seen IS NOT NULL
+
+-- "The Fault In Our Stars" | 'IN' SHOULD BE WRITTEN IN LOWERCASE.
+-- ↓
+
+SELECT   INSTR(Movie_Adaptation_Seen, " (2014)") AS Position 
+FROM     `booklists.books_2018`
+WHERE    Book_Author = "John Green"
+
+-- BigQuery DOES NOT SEEM TO RECOGNIZE CHARINDEX() OR INSERT().
+
+UPDATE   `booklists.books_2018`
+SET      Book_Title = 
+         (SELECT SUBSTR(Movie_Adaptation_Seen, 1, 23)
+          FROM `booklists.books_2018`
+          WHERE Book_Author = "John Green"),
+         Original_Title = Book_Title
+WHERE    Book_Author = "John Green" AND Movie_Adaptation_Seen IS NOT NULL 
+
+
+
+
+
+---------------------------------------------------------------------------
+-- 2019
+---------------------------------------------------------------------------
 
 SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title     
 FROM     `booklists.books_2019`
@@ -61,11 +89,11 @@ UPDATE   `booklists.books_2019`
 SET      Book_Title = 
          (SELECT REPLACE(Book_Title,
              (SELECT SUBSTR(Book_Title, -8, 5)
-              FROM `booklists.books_2019`
-              WHERE Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"), 
+              FROM   `booklists.books_2019`
+              WHERE  Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"), 
               "the B")
-          FROM `booklists.books_2019`
-          WHERE Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%")
+          FROM   `booklists.books_2019`
+          WHERE  Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%")
 WHERE Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"
 
 
@@ -110,21 +138,13 @@ ORDER BY Reading_Order
 UPDATE   `booklists.books_2020` 
 SET      Book_Title = 
          (SELECT REPLACE("The Seven Spiritual Law of Success", "Law", "Laws")
-          FROM `booklists.books_2020`
-          WHERE Book_Title LIKE "%Law%"),
+          FROM   `booklists.books_2020`
+          WHERE  Book_Title LIKE "%Law%"),
          Original_Title = 
          (SELECT REPLACE("The Seven Spiritual Law of Success", "Law", "Laws")
-          FROM `booklists.books_2020`
-          WHERE Original_Title LIKE "%Law%")
+          FROM   `booklists.books_2020`
+          WHERE  Original_Title LIKE "%Law%")
 WHERE    Book_Title LIKE "%Law%" OR Original_Title LIKE "%Law%"
-
-/*
-SELECT INSTR(Book_Title, "Year") AS Position
-FROM `booklists.books_2020`
-WHERE Reading_Order = 25
-
-BigQuery DOES NOT SEEM TO RECOGNIZE CHARINDEX() AND INSERT().
-*/
 
 UPDATE   `booklists.books_2020` 
 SET      Book_Title = "One Hundred Years of Solitude"
@@ -256,8 +276,8 @@ WHERE     Book_Author = "Cecelia Ahern" AND Original_Title IS NULL
 UPDATE    `booklists.books_years_unknown`
 SET       Original_Title = 
           (SELECT Book_Title
-           FROM `booklists.books_years_unknown`
-           WHERE Book_Author = "Cecelia Ahern" AND Original_Title IS NULL)
+           FROM   `booklists.books_years_unknown`
+           WHERE  Book_Author = "Cecelia Ahern" AND Original_Title IS NULL)
 WHERE     Book_Author = "Cecelia Ahern" AND Original_Title IS NULL
 
 
@@ -311,15 +331,15 @@ WHERE     Alternative_Title LIKE "Cormoran Strike%"
 UPDATE    `booklists.books_years_unknown`
 SET       Original_Title = 
           (SELECT Book_Title
-           FROM `booklists.books_years_unknown`
-           WHERE Alternative_Title = "Cormoran Strike, Book 1")
+           FROM   `booklists.books_years_unknown`
+           WHERE  Alternative_Title = "Cormoran Strike, Book 1")
 WHERE     Alternative_Title = "Cormoran Strike, Book 1"
 
 UPDATE    `booklists.books_years_unknown`
 SET       Original_Title = 
           (SELECT Book_Title
-           FROM `booklists.books_years_unknown`
-           WHERE Alternative_Title = "Cormoran Strike, Book 2")
+           FROM   `booklists.books_years_unknown`
+           WHERE  Alternative_Title = "Cormoran Strike, Book 2")
 WHERE     Alternative_Title = "Cormoran Strike, Book 2"
 
 
