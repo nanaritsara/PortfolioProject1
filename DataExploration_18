@@ -1,0 +1,110 @@
+/* 
+DATA EXPLORATION: 2018
+
+SHOWCASE: AGGREGATE FUNCTIONS, COMPARISON OPERATORS, STRING FUNCTIONS, SUBQUERIES, TYPECASTING;
+*/
+
+
+---------------------------------------------------------------------------
+
+
+ALTER TABLE   `booklists.books_2018`
+RENAME COLUMN Author_Sex TO Author_Gender
+            
+ALTER TABLE   `booklists.books_2018`
+RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Author, Book_Title, SPLIT(Book_Genre, ", ") AS Genre_Spectrum, Book_Theme
+FROM     `booklists.books_2018`
+
+/*
+UPDATE   `booklists.books_2018` 
+SET      Book_Genre = CONCAT_WS("' ",
+         (SELECT Book_Genre
+          FROM   `booklists.books_2018`
+          WHERE  Book_Title = "Der Zahir"), 
+         "Psychological")
+WHERE    Book_Title = "Der Zahir"
+
+BigQuery DOES NOT SEEM TO RECOGNIZE CONCAT_WS().
+*/
+
+UPDATE   `booklists.books_2018` 
+SET      Book_Genre = CONCAT(
+         (SELECT Book_Genre
+          FROM   `booklists.books_2018`
+          WHERE  Book_Title = "Der Zahir"), 
+         ", Psychological")
+WHERE    Book_Title = "Der Zahir"
+
+
+
+
+
+---------------------------------------------------------------------------
+-- {Q: How many book have I read in each language?}
+
+SELECT   DISTINCT Reading_Language
+FROM     `booklists.books_2018`
+
+SELECT   Reading_Language, COUNT(Book_Title) AS Book_Counts
+FROM     `booklists.books_2018`
+GROUP BY Reading_Language
+
+
+
+
+
+---------------------------------------------------------------------------
+-- {Q: Have I read any translated versions?}
+
+SELECT   COUNT(Book_Title)
+FROM     `booklists.books_2018`
+WHERE    Original_Language NOT LIKE Reading_Language
+  
+SELECT   Book_Author, Book_Title, Original_Language, Reading_Language
+FROM     `booklists.books_2018`
+WHERE    Original_Language <> Reading_Language
+
+
+
+
+
+---------------------------------------------------------------------------
+-- {Q: Have I read novels which are longer than 300 pages?}
+
+SELECT   Book_Author, Book_Title, Page_Counts
+FROM     `booklists.books_2018`
+WHERE    Page_Counts >= 300 AND Fiction = TRUE
+ORDER BY Page_Counts
+
+/*
+SELECT   Book_Author, Book_Title, Page_Counts
+FROM     `booklists.books_2018`
+WHERE    CAST(Page_Counts AS STRING) NOT LIKE "1_%" AND
+         CAST(Page_Counts AS STRING) NOT LIKE "2_%" AND 
+         Non_Fiction = FALSE
+ORDER BY Page_Counts
+*/
+
+
+
+
+
+---------------------------------------------------------------------------
+-- {Q: Which are the smallest and largest books I have read?}
+
+SELECT   MIN(Page_Counts) AS Smallest,  -- {A: 160 pages.} 
+         MAX(Page_Counts) AS Largest    -- {A: 592 pages.} 
+FROM     `booklists.books_2018`
+
+SELECT   Book_Author, Book_Title, Page_Counts 
+FROM     `booklists.books_2018`
+WHERE    Page_Counts IN (160, 592)
+ORDER BY Page_Counts
+
+
