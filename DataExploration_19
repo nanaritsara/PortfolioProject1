@@ -15,6 +15,9 @@ ALTER TABLE   `booklists.books_2019`
 RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
 
 
+
+
+
 ---------------------------------------------------------------------------
 -- {Q: What is the average number of pages I read in a year?} 
 
