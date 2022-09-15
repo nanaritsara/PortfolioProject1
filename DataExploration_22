@@ -13,6 +13,9 @@ ALTER TABLE   `booklists.books_2022`
 RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
 
 
+---------------------------------------------------------------------------
+
+
 INSERT INTO   `booklists.books_2022`
          (Reading_Year, Reading_Order, Book_Author, Book_Title,
           Page_Counts, Author_Gender, Author_From, Author_Ethnicity,  
@@ -25,6 +28,8 @@ VALUES   (2022, 18, "Kate Northrup", "Money, A Love Story",
           "Money, A Love Story", FALSE, TRUE,
           "Esoteric Book","Personal Growth, Self-Help", "Finance Management",
           "English", "English", "Kindle Book")
+
+---------------------------------------------------------------------------
 
 
 UPDATE   `booklists.books_2022`
@@ -39,6 +44,9 @@ SET      Book_Type = CONCAT(
           WHERE   Book_Title = "The Silence of the Girls"),
          ", War Story; 'Iliad'")
 WHERE    Book_Title = "The Silence of the Girls"
+
+
+---------------------------------------------------------------------------
 
 
 UPDATE  `booklists.books_2022`
@@ -68,9 +76,12 @@ SET      Book_Theme = CONCAT(
 WHERE    Book_Title = "The Ghost Bride"
 
 
+---------------------------------------------------------------------------
+
+
 UPDATE  `booklists.books_2022`
 SET      Book_Theme = CONCAT(
-         (SELECT  Book_Theme
+         (SELECT  Book_Theme
           FROM    `booklists.books_2022`
           WHERE   Book_Title = "City of Girls"),
          "; New York City Theater World (1940s)")
@@ -109,6 +120,10 @@ SET      Book_Theme = "Spirituality; 'A Course in Miracles'"
 WHERE    Book_Title = "A Return to Love"
 
 
+---------------------------------------------------------------------------
+
+
+…
 
 
 
