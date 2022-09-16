@@ -110,16 +110,21 @@ WHERE   Book_Author = "James Hilton"
 ---------------------------------------------------------------------------
 
 
-SELECT   Book_Author, Author_Sex, Author_From, Author_Ethnicity
+SELECT   Book_Author, Author_From, Author_Ethnicity
 FROM     `booklists.books_2021`
-WHERE    Book_Title LIKE "%War%"
+WHERE    Book_Title LIKE "%War%" OR Book_Author LIKE "%Jay"
 
--- "Steven pressfield" | 'P' SHOULD BE WRITTEN IN UPPERCASE.
+-- "Steven pressfield", "Mag Jay"
 -- ↓
 
 UPDATE   `booklists.books_2021`
 SET      Book_Author = "Steven Pressfield"
 WHERE    Book_Title LIKE "%War%"
+
+UPDATE   `booklists.books_2021`
+SET      Book_Author = "Meg Jay"
+WHERE    Book_Author LIKE "%Jay"
+
 
 
 
