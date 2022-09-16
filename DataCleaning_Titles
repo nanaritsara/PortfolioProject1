@@ -7,6 +7,7 @@ DATA CLEANING: BOOK TITLES
 -- 2018
 ---------------------------------------------------------------------------
 
+
 SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title, Movie_Adaptation_Seen      
 FROM     `booklists.books_2018`
 WHERE    Book_Author = "John Green" AND Movie_Adaptation_Seen IS NOT NULL
@@ -18,7 +19,7 @@ SELECT   INSTR(Movie_Adaptation_Seen, " (2014)") AS Position
 FROM     `booklists.books_2018`
 WHERE    Book_Author = "John Green"
 
--- BigQuery DOES NOT SEEM TO RECOGNIZE CHARINDEX() OR INSERT().
+-- BigQuery DOES NOT SEEM TO RECOGNIZE CHARINDEX().
 
 UPDATE   `booklists.books_2018`
 SET      Book_Title = 
@@ -35,6 +36,7 @@ WHERE    Book_Author = "John Green" AND Movie_Adaptation_Seen IS NOT NULL
 ---------------------------------------------------------------------------
 -- 2019
 ---------------------------------------------------------------------------
+
 
 SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title     
 FROM     `booklists.books_2019`
@@ -190,8 +192,8 @@ WHERE    Book_Title LIKE "%Duke%" OR
          Book_Title LIKE "%Crawdads%" OR
          Book_Title LIKE "Turtles%"
 
--- "Stillness Is The Key", "Where The Crawdads Sing", "Turtles All The Way Down", "The Duke And I"   
--- 'THE' AND 'AND' SHOULD BE WRITTEN IN LOWERCASE.
+-- "Stillness Is The Key", "Where The Crawdads Sing", "Turtles All The Way Down" 
+-- 'THE' SHOULD BE WRITTEN IN LOWERCASE.
 -- ↓
 
 SELECT   REPLACE(Book_Title, "The", "the") AS Corrected_Titles
@@ -215,12 +217,33 @@ SET      Book_Title = "Turtles All the Way Down",
          Original_Title = "Turtles All the Way Down"
 WHERE    Book_Title LIKE "Turtles%" 
 
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title
+FROM     `booklists.books_2021`
+WHERE    Book_Title LIKE "%Duke%" OR   
+         Book_Title LIKE "%Zombies" 
+
+-- "Pride And Prejudice And Zombies", "The Duke And I"   
+-- 'AND' SHOULD BE WRITTEN IN LOWERCASE.
+-- ↓  
+
+UPDATE   `booklists.books_2021` 
+SET      Original_Title =
+         (SELECT   REPLACE(Original_Title, "And", "and")
+          FROM     `booklists.books_2021`
+          WHERE    Original_Title LIKE "%Zombies"),
+         Book_Title = Original_Title 
+WHERE    Original_Title LIKE "%Zombies"
+
 UPDATE   `booklists.books_2021` 
 SET      Book_Title = 
          (SELECT Original_Title
           FROM `booklists.books_2021`
           WHERE Book_Title LIKE "%Duke%")    
-WHERE    Book_Title LIKE "%Duke%"    
+WHERE    Book_Title LIKE "%Duke%"  
 
 
 
@@ -266,7 +289,6 @@ FROM      `booklists.books_years_unknown`
 WHERE     Book_Author = "Cecelia Ahern"
 
 -- "How To Fall In Love" | "TO" SHOULD BE WRITTEN IN LOWERCASE.
--- 1 ROW IS MISSING DATA OF 'Original_Title'.
 -- ↓
 
 UPDATE    `booklists.books_years_unknown`
