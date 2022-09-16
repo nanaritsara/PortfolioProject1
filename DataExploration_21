@@ -1,0 +1,144 @@
+/* 
+DATA EXPLORATION: 2021
+*/
+
+
+---------------------------------------------------------------------------
+
+
+ALTER TABLE   `booklists.books_2021`
+RENAME COLUMN Author_Sex TO Author_Gender
+            
+ALTER TABLE   `booklists.books_2021`
+RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
+
+
+UPDATE  `booklists.books_2021`
+SET      Book_Theme = "Romance, Society; England (1813)" 
+WHERE    Book_Title = "Persuasion"
+
+
+UPDATE  `booklists.books_2021`
+SET      Alternative_Title = "The War of Art: Break Through the Blocks and Win Your Inner Creative Battles",
+         Book_Type = "Esoteric Book",
+         Book_Theme = "Creativity" 
+WHERE    Book_Title = "The War of Art"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Theme = "Identity Issue, Mental Health, Multiracial American Family; Ohio (1977)" 
+WHERE    Book_Title = "Everything I Never Told You"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Genre = CONCAT(
+         (SELECT  Book_Type
+          FROM    `booklists.books_2021`
+          WHERE   Book_Title = "Where the Crawdads Sing"),
+         ", Murder Mystery"),
+         Book_Theme = "American Family, Coming-of-Age, Nature; North Carolina (1952-1970)"
+WHERE    Book_Title = "Where the Crawdads Sing"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Theme = "Creativity"
+WHERE    Book_Title = "Big Magic"
+
+UPDATE   `booklists.books_2021`
+SET      Book_Genre = CONCAT("Historical, ",
+         (SELECT  Book_Type
+          FROM    `booklists.books_2021`
+          WHERE   Book_Title = "The Signature of All Things")), 
+         Book_Theme = "Biology, Botany, Family Dynamic, Spirituality, Womanhood; Amsterdam, Philadelphia, Tahiti (1800-1880)"
+WHERE    Book_Title = "The Signature of All Things"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Genre = "Biographical, Historical",
+         Book_Theme = "Auschwitz-Birkenau Concentration Camp (1942-1945)"
+WHERE    Book_Title LIKE "%Ausschwitz"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Theme = "Identity Issue, Mental Health, Obsessive Compulsive Disorder"
+WHERE    Book_Title LIKE "Turtles%"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Genre = "Legal Story, Thriller",
+         Book_Theme = "Crime, Death Penalty, Ku Klux Klan; Mississippi (1960s)"
+WHERE    Original_Title = "The Chamber"
+
+
+UPDATE  `booklists.books_2021`
+SET      Book_Theme = "Romance; Regency London (1813-1827)"
+WHERE    Book_Series = "Bridgerton"
+
+
+UPDATE  `booklists.books_2021`
+SET      Book_Type = "Novel, Retelling",
+         Book_Genre = "Fantasy, Historical, Mythology"
+WHERE    Book_Author = "Madeline Miller"
+
+UPDATE  `booklists.books_2021`
+SET      Book_Theme = "Greek Mythology; 'Iliad'"
+WHERE    Book_Title LIKE "%Achilles"
+
+UPDATE  `booklists.books_2021`
+SET      Book_Theme = "Greek Mythology; 'Odyssey'"
+WHERE    Book_Title = "Circe"
+
+
+UPDATE  `booklists.books_2021`
+SET      Book_Genre = CONCAT(
+         (SELECT  Book_Genre
+          FROM    `booklists.books_2021`
+          WHERE   Book_Title = "The Handmaid's Tale"),
+         ", Fantasy, Speculative Fiction"),
+         Book_Theme = "Suppression of Women's Reproductive Rights, Totalitarian Society"
+WHERE    Book_Title = "The Handmaid's Tale"
+
+
+SELECT   LENGTH("Fantasy")
+
+UPDATE   `booklists.books_2021`
+SET      Book_Type = CONCAT(
+         (SELECT  SUBSTR(Book_Type, 1, 7)
+          FROM    `booklists.books_2021`
+          WHERE   Book_Title LIKE "%Zombies"),
+         ", Parody Novel, Retelling"),
+         Book_Theme = "English Family, Romance, Zombies; 'Pride and Prejudice'"
+WHERE    Book_Title LIKE "%Zombies"
+
+
+UPDATE   `booklists.books_2021`
+SET       Book_Type = "Esoteric Book"
+WHERE     Book_Author = "Meg Jay"
+
+
+UPDATE    `booklists.books_2021`
+SET       Book_Theme = CONCAT("Asian Americans, ",
+          (SELECT  Book_Theme
+           FROM    `booklists.books_2021`
+           WHERE   Book_Title LIKE "%Downstairs%"),
+          ", Identity, Social Class; Atlanta (1800s)")
+WHERE     Book_Title LIKE "%Downstairs%"
+
+
+SELECT   LENGTH("Biographical")
+
+UPDATE   `booklists.books_2021`
+SET      Book_Genre = SUBSTR(Book_Genre, 1, 12),
+         Book_Theme = CONCAT(
+         (SELECT  Book_Theme
+          FROM    `booklists.books_2021`
+          WHERE   Book_Title = "Educated"),
+         ", Survivalist Mormon Family")
+WHERE    Book_Title = "Educated"
+
+
+---------------------------------------------------------------------------
+
+
+…
+
