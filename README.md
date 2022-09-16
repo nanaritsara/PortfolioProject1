@@ -123,5 +123,10 @@ How to fall in love
 Pride and prejudice
 11 minutes
 
+1 Analysis: Bridgerton
+2 Analysis: Robert Langdon
+3 Analysis: All Author's 
+4 Analysis: All Protagonist
+5 Analysis: 
 
 
