@@ -42,6 +42,75 @@ SET      Book_Genre = CONCAT(
 WHERE    Book_Title = "Der Zahir"
 
 
+---------------------------------------------------------------------------
+
+
+UPDATE   `booklists.books_2018`
+SET      Alternative_Title = 
+         (SELECT    Alternative_Title
+          FROM      `booklists.books_2018`
+          WHERE     Book_Title LIKE "%Carol")
+WHERE    Book_Title LIKE "%Pan"
+
+/*
+DELETE
+FROM     `booklists.books_2018`
+WHERE    Alternative_Title = "The Boy Who Wouldn't Grow Up" AND Book_Title NOT LIKE "Peter Pan"
+
+I accidentally deleted the entire row instead of just one cell.
+*/
+
+INSERT INTO   `booklists.books_2018`
+         (Reading_Year, Reading_Order, Book_Author, Book_Title,
+          Page_Counts, Author_Gender, Author_From, Author_Ethnicity,  
+          Protagonist_Gender, Protagonist_Nationality, 
+          Alternative_Title, Original_Title, Fiction, Non_Fiction,
+          Book_Type, Book_Genre, Book_Theme, 
+          Reading_Language, Original_Language, Reading_Book_Format)
+VALUES   (2018, 11, "Charles Dickens", "A Christmas Carol",
+          68, "M", "United Kingdom", "Caucasian, European, White", "M", "British",
+          "A Christmas Carol. In Prose. Being a Ghost Story of Christmas",
+          "A Christmas Carol", TRUE, FALSE,
+          "Novella","Classics", "Christmas, Ghost Story, Redemption,",
+          "English", "English", "Paperback")
+
+
+---------------------------------------------------------------------------
+
+
+UPDATE   `booklists.books_2018`
+SET      Book_Genre = NULL
+WHERE    Book_Title IN ("Where Rainbows End", "Tschick")
+
+
+SELECT   LENGTH("Advice, How-To, "), LENGTH("Personal Growth, Self-Help") 
+
+UPDATE   `booklists.books_2018`
+SET      Book_Genre = SUBSTR(Book_Genre, 16, 26)
+WHERE    Book_Title LIKE "%Tidying%"
+
+
+UPDATE   `booklists.books_2018`
+SET      Book_Genre = CONCAT("Literary, ",
+         (SELECT  Book_Genre
+          FROM    `booklists.books_2018`
+          WHERE   Book_Title = "The Fault in Our Stars "))
+WHERE    Book_Title = "The Fault in Our Stars "
+
+
+UPDATE   `booklists.books_2018`
+SET      Book_Genre = CONCAT(
+         (SELECT  Book_Theme
+          FROM    `booklists.books_2018`
+          WHERE   Book_Series LIKE "Hannibal%"),
+         ", ",
+         (SELECT  Book_Genre
+          FROM    `booklists.books_2018`
+          WHERE   Book_Series LIKE "Hannibal%")),
+         Book_Theme = "Serial Killer Investigation"  
+WHERE   Book_Series LIKE "Hannibal%"
+
+
 
 
 
@@ -106,5 +175,7 @@ SELECT   Book_Author, Book_Title, Page_Counts
 FROM     `booklists.books_2018`
 WHERE    Page_Counts IN (160, 592)
 ORDER BY Page_Counts
+
+
 
 
