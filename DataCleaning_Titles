@@ -177,6 +177,30 @@ SET      Alternative_Title = "Robert Langdon, Book 5"
 WHERE    Reading_Order = 22
 
 
+---------------------------------------------------------------------------
+
+
+UPDATE   `booklists.books_2020`
+SET      Original_Title =
+         (SELECT   REPLACE(Original_Title, "By", "by")
+          FROM     `booklists.books_2020`
+          WHERE    Original_Title LIKE "Call Me%"),
+         Book_Title = Original_Title 
+WHERE    Original_Title LIKE "Call Me%"
+
+
+---------------------------------------------------------------------------
+
+
+UPDATE   `booklists.books_2020`
+SET      Book_Title = 
+         (SELECT  REPLACE(Book_Title, "Ho", "Ha")
+          FROM    `booklists.books_2020`
+          WHERE   Book_Title LIKE "%%Deathly%"),
+         Original_Title = Book_Title
+WHERE    Book_Title LIKE "%Deathly%"
+
+
 
 
 
