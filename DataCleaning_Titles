@@ -23,9 +23,9 @@ WHERE    Book_Author = "John Green"
 
 UPDATE   `booklists.books_2018`
 SET      Book_Title = 
-         (SELECT SUBSTR(Movie_Adaptation_Seen, 1, 23)
-          FROM `booklists.books_2018`
-          WHERE Book_Author = "John Green"),
+         (SELECT   SUBSTR(Movie_Adaptation_Seen, 1, 23)
+          FROM     `booklists.books_2018`
+          WHERE    Book_Author = "John Green"),
          Original_Title = Book_Title
 WHERE    Book_Author = "John Green" AND Movie_Adaptation_Seen IS NOT NULL 
 
@@ -50,10 +50,7 @@ SET      Book_Title = "After the Quake"
 WHERE    Book_Author = "Haruki Murakami"
 
 UPDATE   `booklists.books_2019`
-SET      Alternative_Title = 
-         CONCAT("After ", 
-                LOWER(SUBSTR(Book_Title, 7, 3)), 
-                " Quake: Stories")
+SET      Alternative_Title = CONCAT("After ", LOWER(SUBSTR(Book_Title, 7, 3)), " Quake: Stories")
 WHERE    Book_Author = "Haruki Murakami"
 
 
@@ -89,13 +86,13 @@ WHERE    Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"
 
 UPDATE   `booklists.books_2019`
 SET      Book_Title = 
-         (SELECT REPLACE(Book_Title,
-             (SELECT SUBSTR(Book_Title, -8, 5)
-              FROM   `booklists.books_2019`
-              WHERE  Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"), 
+         (SELECT   REPLACE(Book_Title,
+             (SELECT   SUBSTR(Book_Title, -8, 5)
+              FROM     `booklists.books_2019`
+              WHERE    Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"), 
               "the B")
-          FROM   `booklists.books_2019`
-          WHERE  Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%")
+          FROM     `booklists.books_2019`
+          WHERE    Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%")
 WHERE Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"
 
 
@@ -139,13 +136,13 @@ ORDER BY Reading_Order
 
 UPDATE   `booklists.books_2020` 
 SET      Book_Title = 
-         (SELECT REPLACE("The Seven Spiritual Law of Success", "Law", "Laws")
-          FROM   `booklists.books_2020`
-          WHERE  Book_Title LIKE "%Law%"),
+         (SELECT   REPLACE("The Seven Spiritual Law of Success", "Law", "Laws")
+          FROM     `booklists.books_2020`
+          WHERE    Book_Title LIKE "%Law%"),
          Original_Title = 
-         (SELECT REPLACE("The Seven Spiritual Law of Success", "Law", "Laws")
-          FROM   `booklists.books_2020`
-          WHERE  Original_Title LIKE "%Law%")
+         (SELECT   REPLACE("The Seven Spiritual Law of Success", "Law", "Laws")
+          FROM     `booklists.books_2020`
+          WHERE    Original_Title LIKE "%Law%")
 WHERE    Book_Title LIKE "%Law%" OR Original_Title LIKE "%Law%"
 
 UPDATE   `booklists.books_2020` 
@@ -194,7 +191,7 @@ WHERE    Original_Title LIKE "Call Me%"
 
 UPDATE   `booklists.books_2020`
 SET      Book_Title = 
-         (SELECT  REPLACE(Book_Title, "Ho", "Ha")
+         (SELECT   REPLACE(Book_Title, "Ho", "Ha")
           FROM    `booklists.books_2020`
           WHERE   Book_Title LIKE "%%Deathly%"),
          Original_Title = Book_Title
@@ -264,9 +261,9 @@ WHERE    Original_Title LIKE "%Zombies"
 
 UPDATE   `booklists.books_2021` 
 SET      Book_Title = 
-         (SELECT Original_Title
-          FROM `booklists.books_2021`
-          WHERE Book_Title LIKE "%Duke%")    
+         (SELECT    Original_Title
+          FROM      `booklists.books_2021`
+          WHERE     Book_Title LIKE "%Duke%")    
 WHERE    Book_Title LIKE "%Duke%"  
 
 
@@ -321,9 +318,9 @@ WHERE     Book_Author = "Cecelia Ahern" AND Original_Title IS NULL
 
 UPDATE    `booklists.books_years_unknown`
 SET       Original_Title = 
-          (SELECT Book_Title
-           FROM   `booklists.books_years_unknown`
-           WHERE  Book_Author = "Cecelia Ahern" AND Original_Title IS NULL)
+          (SELECT   Book_Title
+           FROM     `booklists.books_years_unknown`
+           WHERE    Book_Author = "Cecelia Ahern" AND Original_Title IS NULL)
 WHERE     Book_Author = "Cecelia Ahern" AND Original_Title IS NULL
 
 
@@ -376,16 +373,16 @@ WHERE     Alternative_Title LIKE "Cormoran Strike%"
 
 UPDATE    `booklists.books_years_unknown`
 SET       Original_Title = 
-          (SELECT Book_Title
-           FROM   `booklists.books_years_unknown`
-           WHERE  Alternative_Title = "Cormoran Strike, Book 1")
+          (SELECT   Book_Title
+           FROM     `booklists.books_years_unknown`
+           WHERE    Alternative_Title = "Cormoran Strike, Book 1")
 WHERE     Alternative_Title = "Cormoran Strike, Book 1"
 
 UPDATE    `booklists.books_years_unknown`
 SET       Original_Title = 
-          (SELECT Book_Title
-           FROM   `booklists.books_years_unknown`
-           WHERE  Alternative_Title = "Cormoran Strike, Book 2")
+          (SELECT   Book_Title
+           FROM     `booklists.books_years_unknown`
+           WHERE    Alternative_Title = "Cormoran Strike, Book 2")
 WHERE     Alternative_Title = "Cormoran Strike, Book 2"
 
 
