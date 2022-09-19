@@ -21,25 +21,23 @@ RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
 SELECT   Book_Author, Book_Title, SPLIT(Book_Genre, ", ") AS Genre_Spectrum, Book_Theme
 FROM     `booklists.books_2018`
 
-/*
 UPDATE   `booklists.books_2018` 
 SET      Book_Genre = CONCAT_WS("' ",
-         (SELECT Book_Genre
-          FROM   `booklists.books_2018`
-          WHERE  Book_Title = "Der Zahir"), 
+         (SELECT  Book_Genre
+          FROM    `booklists.books_2018`
+          WHERE   Book_Title = "Der Zahir"), 
          "Psychological")
 WHERE    Book_Title = "Der Zahir"
 
-BigQuery DOES NOT SEEM TO RECOGNIZE CONCAT_WS().
-*/
-
+/*
 UPDATE   `booklists.books_2018` 
 SET      Book_Genre = CONCAT(
-         (SELECT Book_Genre
-          FROM   `booklists.books_2018`
-          WHERE  Book_Title = "Der Zahir"), 
+         (SELECT  Book_Genre
+          FROM    `booklists.books_2018`
+          WHERE   Book_Title = "Der Zahir"), 
          ", Psychological")
 WHERE    Book_Title = "Der Zahir"
+*/
 
 
 ---------------------------------------------------------------------------
@@ -47,9 +45,9 @@ WHERE    Book_Title = "Der Zahir"
 
 UPDATE   `booklists.books_2018`
 SET      Alternative_Title = 
-         (SELECT    Alternative_Title
-          FROM      `booklists.books_2018`
-          WHERE     Book_Title LIKE "%Carol")
+         (SELECT  Alternative_Title
+          FROM    `booklists.books_2018`
+          WHERE   Book_Title LIKE "%Carol")
 WHERE    Book_Title LIKE "%Pan"
 
 /*
@@ -57,7 +55,7 @@ DELETE
 FROM     `booklists.books_2018`
 WHERE    Alternative_Title = "The Boy Who Wouldn't Grow Up" AND Book_Title NOT LIKE "Peter Pan"
 
-I accidentally deleted the entire row instead of just one cell.
+I ACCIDENTALLY DELETED THE ENTIRE ROW INSTEAD OF JUST ONE CELL.
 */
 
 INSERT INTO   `booklists.books_2018`
@@ -71,7 +69,7 @@ VALUES   (2018, 11, "Charles Dickens", "A Christmas Carol",
           68, "M", "United Kingdom", "Caucasian, European, White", "M", "British",
           "A Christmas Carol. In Prose. Being a Ghost Story of Christmas",
           "A Christmas Carol", TRUE, FALSE,
-          "Novella","Classics", "Christmas, Ghost Story, Redemption,",
+          "Novella","Classics", "Christmas, Ghost Story, Redemption",
           "English", "English", "Paperback")
 
 
@@ -82,6 +80,7 @@ UPDATE   `booklists.books_2018`
 SET      Book_Genre = NULL
 WHERE    Book_Title IN ("Where Rainbows End", "Tschick")
 
+----------
 
 SELECT   LENGTH("Advice, How-To, "), LENGTH("Personal Growth, Self-Help") 
 
@@ -89,14 +88,16 @@ UPDATE   `booklists.books_2018`
 SET      Book_Genre = SUBSTR(Book_Genre, 16, 26)
 WHERE    Book_Title LIKE "%Tidying%"
 
+----------
 
 UPDATE   `booklists.books_2018`
 SET      Book_Genre = CONCAT("Literary, ",
          (SELECT  Book_Genre
           FROM    `booklists.books_2018`
-          WHERE   Book_Title = "The Fault in Our Stars "))
-WHERE    Book_Title = "The Fault in Our Stars "
+          WHERE   Book_Title = "The Fault in Our Stars"))
+WHERE    Book_Title = "The Fault in Our Stars"
 
+----------
 
 UPDATE   `booklists.books_2018`
 SET      Book_Genre = CONCAT(
@@ -109,6 +110,8 @@ SET      Book_Genre = CONCAT(
           WHERE   Book_Series LIKE "Hannibal%")),
          Book_Theme = "Serial Killer Investigation"  
 WHERE   Book_Series LIKE "Hannibal%"
+
+----------
 
 
 
