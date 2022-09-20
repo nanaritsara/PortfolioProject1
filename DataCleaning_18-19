@@ -288,3 +288,360 @@ WHERE    Book_Title = "Jane Eyre"
 
 
 
+
+---------------------------------------------------------------------------
+------ 2020
+---------------------------------------------------------------------------
+
+
+ALTER TABLE   `booklists.books_2020`
+RENAME COLUMN Author_Sex TO Author_Gender
+            
+ALTER TABLE   `booklists.books_2020`
+RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title
+FROM     `booklists.books_2020`
+WHERE    Book_Author LIKE "%Hemingway" OR Book_Title LIKE "%Grinch%"
+
+----- «The Old Man and The Sea», «How The Grinch Stole Christmas!» | ‹The› SHOULD BE WRITTEN IN LOWERCASE.
+
+UPDATE   `booklists.books_2020` 
+SET      Book_Title = "The Old Man and the Sea",
+         Original_Title = Book_Title
+WHERE    Book_Author LIKE "%Hemingway"
+
+UPDATE   `booklists.books_2020` 
+SET      Book_Title = "How the Grinch Stole Christmas!",
+         Original_Title = Book_Title
+WHERE    Book_Title LIKE "%Grinch%"
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title
+FROM     `booklists.books_2020`
+WHERE    Reading_Order IN (23, 25)
+ORDER BY Reading_Order
+
+----- «The Seven Spiritual Law of Success», «One Hundred Year of Solitude»
+----- ‹Year› AND ‹Law› SHOULD BE WRITTEN IN PLURAL.
+
+UPDATE   `booklists.books_2020` 
+SET      Book_Title = 
+         (SELECT   REPLACE("The Seven Spiritual Law of Success", "Law", "Laws")
+          FROM     `booklists.books_2020`
+          WHERE    Book_Title LIKE "%Law%"),
+         Original_Title = 
+         (SELECT   REPLACE("The Seven Spiritual Law of Success", "Law", "Laws")
+          FROM     `booklists.books_2020`
+          WHERE    Original_Title LIKE "%Law%")
+WHERE    Book_Title LIKE "%Law%" OR Original_Title LIKE "%Law%"
+
+UPDATE   `booklists.books_2020` 
+SET      Book_Title = "One Hundred Years of Solitude"
+WHERE    Reading_Order = 25
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Reading_Order, Book_Author, Book_Title, Alternative_Title, Original_Title   
+FROM     `booklists.books_2020`
+WHERE    Book_Author = "Dan Brown"
+ORDER BY Reading_Order
+
+----- «Robert Landon» | ‹Langdon› IS SPELLED INCORRECTLY.
+
+UPDATE   `booklists.books_2020`
+SET      Alternative_Title = "Robert Langdon, Book 3"
+WHERE    Reading_Order = 20
+
+UPDATE   `booklists.books_2020`
+SET      Alternative_Title = "Robert Langdon, Book 4"
+WHERE    Reading_Order = 21
+
+UPDATE   `booklists.books_2020`
+SET      Alternative_Title = "Robert Langdon, Book 5"
+WHERE    Reading_Order = 22
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Title, Original_Title
+FROM     `booklists.books_2020`
+WHERE    Original_Title LIKE "Call Me%" OR Book_Title LIKE "%Deathly%"
+
+----- «Call Me By Your Name», «(…) and the Deathly Hollows» 
+----- ‹By› SHOULD BE WRITTEN IN LOWERCASE. ‹Hallows› IS SPELLED INCORRECTLY.
+
+UPDATE   `booklists.books_2020`
+SET      Original_Title =
+         (SELECT   REPLACE(Original_Title, "By", "by")
+          FROM     `booklists.books_2020`
+          WHERE    Original_Title LIKE "Call Me%"),
+         Book_Title = Original_Title 
+WHERE    Original_Title LIKE "Call Me%"
+
+UPDATE   `booklists.books_2020`
+SET      Book_Title = 
+         (SELECT   REPLACE(Book_Title, "Ho", "Ha")
+          FROM    `booklists.books_2020`
+          WHERE   Book_Title LIKE "%Deathly%"),
+         Original_Title = Book_Title
+WHERE    Book_Title LIKE "%Deathly%"
+
+
+---------------------------------------------------------------------------
+
+
+UPDATE   `booklists.books_2020`
+SET      Book_Theme = CONCAT("Bisexuality, Coming-of-Age, ",
+         (SELECT  Book_Theme
+          FROM    `booklists.books_2020`
+          WHERE   Book_Title = "Call Me by Your Name"),
+         ", Jewish Italian American Family, Romance ")
+WHERE    Book_Title = "Call Me by Your Name"
+
+
+UPDATE   `booklists.books_2020`
+SET      Book_Title = TRIM(Book_Title),
+         Book_Theme = "American Family, Motherhood, Social Class, Race; Shaker Heights, Ohio (1988)"
+WHERE    Book_Title LIKE "%Fires%"
+
+
+SELECT   LENGTH("Crime") AS First_Half, LENGTH(", Thriller") AS Second_Half 
+
+UPDATE   `booklists.books_2020`
+SET      Book_Genre = CONCAT(
+         (SELECT  SUBSTR(Book_Genre, 1, 5)
+          FROM    `booklists.books_2020`
+          WHERE   Book_Title = "Inferno"),
+         ", ", 
+         (SELECT  Book_Theme
+          FROM    `booklists.books_2020`
+          WHERE   Book_Title = "Inferno"),
+         (SELECT  SUBSTR(Book_Genre, 6, 10)
+          FROM    `booklists.books_2020`
+          WHERE   Book_Title = "Inferno"))
+WHERE    Book_Title = "Inferno"
+
+UPDATE   `booklists.books_2020`
+SET      Book_Theme = "Freemasonry, Symbology; Washington, D.C."
+WHERE    Original_Title = "The Lost Symbol"
+
+UPDATE   `booklists.books_2020`
+SET      Book_Theme = "Dante's 'Divine Comedy', Symbology; Florence, Italy; Istanbul, Turkey"
+WHERE    Original_Title = "Inferno"
+
+UPDATE   `booklists.books_2020`
+SET      Original_Title = RTRIM(Original_Title),
+         Book_Theme = "Atheism, Symbology; Catalonia, Spain"
+WHERE    Book_Title = "Origin"
+
+UPDATE   `booklists.books_2020`
+SET      Book_Genre = 
+         (SELECT  Book_Genre
+          FROM    `booklists.books_2020`
+          WHERE   Book_Title = "Inferno")
+WHERE    Original_Title IN ("The Lost Symbol", "Origin")
+
+
+UPDATE   `booklists.books_2020`
+SET      Book_Author = RTRIM(Book_Author),
+         Book_Theme = "Coming-of-Age, Gothic Novel, Naivety, Society; Bath, England"
+WHERE    Book_Author LIKE "Jane%"
+
+
+UPDATE   `booklists.books_2020`
+SET      Book_Theme = "Coming-of-Age, Depression, Sisterhood; Grosse Pointe, Michigan (1970s)"
+WHERE    Book_Title LIKE "%Virgin%"
+
+
+
+
+
+---------------------------------------------------------------------------
+----- 2021
+--------------------------------------------------------------------------- 
+
+
+ALTER TABLE   `booklists.books_2021`
+RENAME COLUMN Author_Sex TO Author_Gender
+            
+ALTER TABLE   `booklists.books_2021`
+RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title
+FROM     `booklists.books_2021`
+WHERE    Book_Title LIKE "%Duke%" OR   
+         Book_Title LIKE "Stillness%" OR
+         Book_Title LIKE "%Crawdads%" OR
+         Book_Title LIKE "Turtles%"
+
+----- «Stillness Is The Key», «Where The Crawdads Sing», «Turtles All The Way Down» 
+----- ‹The› SHOULD BE WRITTEN IN LOWERCASE.
+
+SELECT   REPLACE(Book_Title, "The", "the") AS Corrected_Titles
+FROM     `booklists.books_2021`
+WHERE    Book_Title LIKE "Stillness%" OR
+         Book_Title LIKE "%Crawdads%" OR
+         Book_Title LIKE "Turtles%"
+
+UPDATE   `booklists.books_2021`
+SET      Book_Title = "Stillness Is the Key",
+         Original_Title = "Stillness Is the Key"
+WHERE    Book_Title LIKE "Stillness%" 
+
+UPDATE   `booklists.books_2021`
+SET      Book_Title = "Where the Crawdads Sing",
+         Original_Title = "Where the Crawdads Sing"
+WHERE    Book_Title LIKE "%Crawdads%"
+
+UPDATE   `booklists.books_2021`
+SET      Book_Title = "Turtles All the Way Down",
+         Original_Title = "Turtles All the Way Down"
+WHERE    Book_Title LIKE "Turtles%" 
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title
+FROM     `booklists.books_2021`
+WHERE    Book_Title LIKE "%Duke%" OR Book_Title LIKE "%Zombies" 
+
+----- «Pride And Prejudice And Zombies», «The Duke And I»   
+----- ‹And› SHOULD BE WRITTEN IN LOWERCASE.
+
+UPDATE   `booklists.books_2021` 
+SET      Original_Title =
+         (SELECT   REPLACE(Original_Title, "And", "and")
+          FROM     `booklists.books_2021`
+          WHERE    Original_Title LIKE "%Zombies"),
+         Book_Title = Original_Title 
+WHERE    Original_Title LIKE "%Zombies"
+
+UPDATE   `booklists.books_2021` 
+SET      Book_Title = 
+         (SELECT    Original_Title
+          FROM      `booklists.books_2021`
+          WHERE     Book_Title LIKE "%Duke%")    
+WHERE    Book_Title LIKE "%Duke%"  
+
+
+---------------------------------------------------------------------------
+
+
+UPDATE  `booklists.books_2021`
+SET      Alternative_Title = "The War of Art: Break Through the Blocks and Win Your Inner Creative Battles",
+         Book_Type = "Esoteric Book", Book_Theme = "Creativity" 
+WHERE    Book_Title = "The War of Art"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Theme = "Identity Issue, Mental Health, Multiracial American Family; Ohio (1977)" 
+WHERE    Book_Title = "Everything I Never Told You"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Genre = CONCAT(
+         (SELECT  Book_Type
+          FROM    `booklists.books_2021`
+          WHERE   Book_Title = "Where the Crawdads Sing"),
+         ", Murder Mystery"),
+         Book_Theme = "American Family, Coming-of-Age, Nature; North Carolina (1952-1970)"
+WHERE    Book_Title = "Where the Crawdads Sing"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Genre = CONCAT("Historical, ",
+         (SELECT  Book_Type
+          FROM    `booklists.books_2021`
+          WHERE   Book_Title = "The Signature of All Things")), 
+         Book_Theme = "Biology, Botany, Family Dynamic, Spirituality, Womanhood; Amsterdam, Philadelphia, Tahiti (1800-1880)"
+WHERE    Book_Title = "The Signature of All Things"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Genre = "Biographical, Historical",
+         Book_Theme = "Auschwitz-Birkenau Concentration Camp (1942-1945)"
+WHERE    Book_Title LIKE "%Ausschwitz"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Theme = "Identity Issue, Mental Health, Obsessive Compulsive Disorder"
+WHERE    Book_Title LIKE "Turtles%"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Genre = "Legal Story, Thriller",
+         Book_Theme = "Crime, Death Penalty, Ku Klux Klan; Mississippi (1960s)"
+WHERE    Original_Title = "The Chamber"
+
+
+UPDATE  `booklists.books_2021`
+SET      Book_Type = "Novel, Retelling",
+         Book_Genre = "Fantasy, Historical, Mythology"
+WHERE    Book_Author = "Madeline Miller"
+
+UPDATE  `booklists.books_2021`
+SET      Book_Theme = "Greek Mythology; 'Iliad'"
+WHERE    Book_Title LIKE "%Achilles"
+
+UPDATE  `booklists.books_2021`
+SET      Book_Theme = "Greek Mythology; 'Odyssey'"
+WHERE    Book_Title = "Circe"
+
+
+UPDATE  `booklists.books_2021`
+SET      Book_Genre = CONCAT(
+         (SELECT  Book_Genre
+          FROM    `booklists.books_2021`
+          WHERE   Book_Title = "The Handmaid's Tale"),
+         ", Fantasy, Speculative Fiction"),
+         Book_Theme = "Suppression of Women's Reproductive Rights, Totalitarian Society"
+WHERE    Book_Title = "The Handmaid's Tale"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Type = CONCAT(
+         (SELECT  SUBSTR(Book_Type, 1, 7)
+          FROM    `booklists.books_2021`
+          WHERE   Book_Title LIKE "%Zombies"),
+         ", Parody Novel, Retelling"),
+         Book_Theme = "English Family, Romance, Zombies; 'Pride and Prejudice'"
+WHERE    Book_Title LIKE "%Zombies"
+
+
+UPDATE    `booklists.books_2021`
+SET       Book_Theme = CONCAT("Asian Americans, ",
+          (SELECT  Book_Theme
+           FROM    `booklists.books_2021`
+           WHERE   Book_Title LIKE "%Downstairs%"),
+          ", Identity, Social Class; Atlanta (1800s)")
+WHERE     Book_Title LIKE "%Downstairs%"
+
+
+UPDATE   `booklists.books_2021`
+SET      Book_Genre = SUBSTR(Book_Genre, 1, 12),
+         Book_Theme = CONCAT(
+         (SELECT  Book_Theme
+          FROM    `booklists.books_2021`
+          WHERE   Book_Title = "Educated"),
+         ", Survivalist Mormon Family")
+WHERE    Book_Title = "Educated"
+
+
+
+
