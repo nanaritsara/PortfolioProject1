@@ -38,22 +38,14 @@ FROM     `booklists.books_2018`
 
 /*
 UPDATE   `booklists.books_2018` 
-SET      Book_Genre = CONCAT_WS(", ",
-         (SELECT  Book_Genre
-          FROM    `booklists.books_2018`
-          WHERE   Book_Title = "Der Zahir"), 
-         "Psychological")
+SET      Book_Genre = CONCAT_WS(", ", Book_Genre, "Psychological")
 WHERE    Book_Title = "Der Zahir"
 
 ----- BigQuery DOES NOT SEEM TO RECOGNIZE CONCAT_WS.
 */
 
 UPDATE   `booklists.books_2018` 
-SET      Book_Genre = CONCAT(
-         (SELECT  Book_Genre
-          FROM    `booklists.books_2018`
-          WHERE   Book_Title = "Der Zahir"), 
-         ", Psychological")
+SET      Book_Genre = CONCAT(Book_Genre, ", Psychological")
 WHERE    Book_Title = "Der Zahir"
 
 
@@ -103,11 +95,7 @@ WHERE    Book_Author = "Haruki Murakami"
 
 UPDATE   `booklists.books_2019`
 SET      Book_Title = CONCAT("After ", LOWER(SUBSTR(Book_Title, 7, 3)), " Quake"),
-         Alternative_Title = CONCAT(
-         (SELECT  Book_Title
-          FROM    `booklists.books_2019`
-          WHERE   Book_Author = "Haruki Murakami"),
-         ": Stories")
+         Alternative_Title = CONCAT(Book_Title, ": Stories")
 WHERE    Book_Author = "Haruki Murakami"
 
 
@@ -141,16 +129,8 @@ WHERE   Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"
 
 
 UPDATE   `booklists.books_2019`
-SET      Book_Genre = CONCAT(
-         (SELECT  Book_Genre
-          FROM    `booklists.books_2019`
-          WHERE   Book_Title LIKE "%Psyche"),
-         ", Fantasy, Mythology"),
-         Book_Theme = CONCAT(
-         (SELECT  Book_Theme
-          FROM    `booklists.books_2019`
-          WHERE   Book_Title LIKE "%Psyche"),
-         "; 'Metamorphoses'"),
+SET      Book_Genre = CONCAT(Book_Genre, ", Fantasy, Mythology"),
+         Book_Theme = CONCAT(Book_Theme, "; 'Metamorphoses'"),
          Original_Title = Alternative_Title
 WHERE    Book_Title LIKE "%Psyche"
 
@@ -198,18 +178,12 @@ WHERE    Original_Title LIKE "Call Me%" OR Book_Title LIKE "%Deathly%"
 ----- ‹By› SHOULD BE WRITTEN IN LOWERCASE. ‹Hallows› IS SPELLED INCORRECTLY.
 
 UPDATE   `booklists.books_2020`
-SET      Original_Title =
-         (SELECT   REPLACE(Original_Title, "By", "by")
-          FROM     `booklists.books_2020`
-          WHERE    Original_Title LIKE "Call Me%"),
+SET      Original_Title = REPLACE(Original_Title, "By", "by"),
          Book_Title = Original_Title 
 WHERE    Original_Title LIKE "Call Me%"
 
 UPDATE   `booklists.books_2020`
-SET      Book_Title = 
-         (SELECT   REPLACE(Book_Title, "Ho", "Ha")
-          FROM    `booklists.books_2020`
-          WHERE   Book_Title LIKE "%Deathly%"),
+SET      Book_Title = REPLACE(Book_Title, "Ho", "Ha"),
          Original_Title = Book_Title
 WHERE    Book_Title LIKE "%Deathly%"
 
@@ -220,17 +194,7 @@ WHERE    Book_Title LIKE "%Deathly%"
 SELECT   LENGTH("Crime") AS First_Half, LENGTH(", Thriller") AS Second_Half 
 
 UPDATE   `booklists.books_2020`
-SET      Book_Genre = CONCAT(
-         (SELECT  SUBSTR(Book_Genre, 1, 5)
-          FROM    `booklists.books_2020`
-          WHERE   Book_Title = "Inferno"),
-         ", ", 
-         (SELECT  Book_Theme
-          FROM    `booklists.books_2020`
-          WHERE   Book_Title = "Inferno"),
-         (SELECT  SUBSTR(Book_Genre, 6, 10)
-          FROM    `booklists.books_2020`
-          WHERE   Book_Title = "Inferno"))
+SET      Book_Genre = CONCAT(SUBSTR(Book_Genre, 1, 5), ", ", Book_Theme, SUBSTR(Book_Genre, 6, 10))
 WHERE    Book_Title = "Inferno"
 
 
@@ -284,26 +248,16 @@ WHERE    Book_Title LIKE "%Duke%" OR Book_Title LIKE "%Zombies"
 ----- ‹And› SHOULD BE WRITTEN IN LOWERCASE.
 
 UPDATE   `booklists.books_2021` 
-SET      Book_Title = 
-         (SELECT    Original_Title
-          FROM      `booklists.books_2021`
-          WHERE     Book_Title LIKE "%Duke%")    
+SET      Book_Title = Original_Title   
 WHERE    Book_Title LIKE "%Duke%" 
 
 UPDATE   `booklists.books_2021` 
-SET      Original_Title =
-         (SELECT   REPLACE(Original_Title, "And", "and")
-          FROM     `booklists.books_2021`
-          WHERE    Original_Title LIKE "%Zombies"),
+SET      Original_Title = REPLACE(Original_Title, "And", "and"),
          Book_Title = Original_Title 
 WHERE    Original_Title LIKE "%Zombies" 
 
 UPDATE   `booklists.books_2021`
-SET      Book_Type = CONCAT(
-         (SELECT  SUBSTR(Book_Type, 1, 7)
-          FROM    `booklists.books_2021`
-          WHERE   Book_Title LIKE "%Zombies"),
-         ", Parody Novel, Retelling"),
+SET      Book_Type = CONCAT(SUBSTR(Book_Type, 1, 7), ", Parody Novel, Retelling"),
          Book_Theme = "English Family, Romance, Zombies; 'Pride and Prejudice'"
 WHERE    Book_Title LIKE "%Zombies"
 
@@ -312,50 +266,31 @@ WHERE    Book_Title LIKE "%Zombies"
 
 
 UPDATE   `booklists.books_2021`
-SET      Book_Genre = CONCAT(
-         (SELECT  Book_Type
-          FROM    `booklists.books_2021`
-          WHERE   Book_Title = "Where the Crawdads Sing"),
-         ", Murder Mystery"),
+SET      Book_Genre = CONCAT(Book_Type, ", Murder Mystery"),
          Book_Theme = "American Family, Coming-of-Age, Nature; North Carolina (1952-1970)"
 WHERE    Book_Title = "Where the Crawdads Sing"
 
 
 UPDATE   `booklists.books_2021`
-SET      Book_Genre = CONCAT("Historical, ",
-         (SELECT  Book_Type
-          FROM    `booklists.books_2021`
-          WHERE   Book_Title = "The Signature of All Things")), 
+SET      Book_Genre = CONCAT("Historical, ", Book_Type),
          Book_Theme = "Biology, Botany, Family Dynamic, Spirituality, Womanhood; Amsterdam, Philadelphia, Tahiti (1800-1880)"
 WHERE    Book_Title = "The Signature of All Things"
 
 
 UPDATE  `booklists.books_2021`
-SET      Book_Genre = CONCAT(
-         (SELECT  Book_Genre
-          FROM    `booklists.books_2021`
-          WHERE   Book_Title = "The Handmaid's Tale"),
-         ", Fantasy, Speculative Fiction"),
+SET      Book_Genre = CONCAT(Book_Genre, ", Fantasy, Speculative Fiction"),
          Book_Theme = "Suppression of Women's Reproductive Rights, Totalitarian Society"
 WHERE    Book_Title = "The Handmaid's Tale"
 
 
 UPDATE    `booklists.books_2021`
-SET       Book_Theme = CONCAT("Asian Americans, ",
-          (SELECT  Book_Theme
-           FROM    `booklists.books_2021`
-           WHERE   Book_Title LIKE "%Downstairs%"),
-          ", Identity, Social Class; Atlanta (1800s)")
+SET       Book_Theme = CONCAT("Asian Americans, ", Book_Theme, ", Identity, Social Class; Atlanta (1800s)")
 WHERE     Book_Title LIKE "%Downstairs%"
 
 
 UPDATE   `booklists.books_2021`
 SET      Book_Genre = SUBSTR(Book_Genre, 1, 12),
-         Book_Theme = CONCAT(
-         (SELECT  Book_Theme
-          FROM    `booklists.books_2021`
-          WHERE   Book_Title = "Educated"),
-         ", Survivalist Mormon Family")
+         Book_Theme = CONCAT(Book_Theme, ", Survivalist Mormon Family")
 WHERE    Book_Title = "Educated"
 
 
@@ -405,10 +340,7 @@ WHERE    Book_Title LIKE "%Tiger%" OR Book_Title LIKE "%Ghost%"
 ----- LEADING SPACE.
 
 UPDATE   `booklists.books_2022`
-SET      Author_Ethnicity = 
-         (SELECT LTRIM(Author_Ethnicity)
-          FROM `booklists.books_2022`
-          WHERE Book_Title LIKE "%Tiger%") 
+SET      Author_Ethnicity = LTRIM(Author_Ethnicity)
 WHERE    Book_Title LIKE "%Tiger%" OR Book_Title LIKE "%Ghost%"
 
 
@@ -416,48 +348,22 @@ WHERE    Book_Title LIKE "%Tiger%" OR Book_Title LIKE "%Ghost%"
 
 
 UPDATE   `booklists.books_2022`
-SET      Book_Type = CONCAT(
-         (SELECT  Book_Type
-          FROM    `booklists.books_2022`
-          WHERE   Book_Title = "The Silence of the Girls"),
-         ", Retelling"),
-         Book_Genre = CONCAT(
-         "Fantasy, ",
-         (SELECT  Book_Genre
-          FROM    `booklists.books_2022`
-          WHERE   Book_Title = "The Silence of the Girls")),
-         Book_Theme = CONCAT(
-         (SELECT  Book_Theme
-          FROM    `booklists.books_2022`
-          WHERE   Book_Title = "The Silence of the Girls"),
-         ", War Story; 'Iliad'")
+SET      Book_Type = CONCAT(Book_Type, ", Retelling"),
+         Book_Genre = CONCAT("Fantasy, ", Book_Genre),
+         Book_Theme = CONCAT(Book_Theme, ", War Story; 'Iliad'")
 WHERE    Book_Title = "The Silence of the Girls"
 
 
 UPDATE  `booklists.books_2022`
-SET      Book_Genre = CONCAT(
-         (SELECT  Book_Genre
-          FROM    `booklists.books_2022`
-          WHERE   Book_Title = "The Night Tiger"),
-         ", Mystery, Young Adult")
+SET      Book_Genre = CONCAT(Book_Genre, ", Mystery, Young Adult")
 WHERE    Book_Title IN ("The Night Tiger", "The Ghost Bride")
 
 UPDATE  `booklists.books_2022`
-SET      Book_Theme = CONCAT(
-         "Colonialism, ",
-         (SELECT  Book_Theme
-          FROM    `booklists.books_2022`
-          WHERE   Book_Title = "The Night Tiger"),
-         ", Superstition; British Malaya (1931)")
+SET      Book_Theme = CONCAT("Colonialism, ", Book_Theme, ", Superstition; British Malaya (1931)")
 WHERE    Book_Title = "The Night Tiger"
 
 UPDATE  `booklists.books_2022`
-SET      Book_Theme = CONCAT(
-         "Afterlife, Colonialism, ",
-         (SELECT  Book_Theme
-          FROM    `booklists.books_2022`
-          WHERE   Book_Title = "The Ghost Bride"),
-         "; British Malaya (1890s)")
+SET      Book_Theme = CONCAT("Afterlife, Colonialism, ", Book_Theme, "; British Malaya (1890s)")
 WHERE    Book_Title = "The Ghost Bride"
 
 
