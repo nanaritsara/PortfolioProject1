@@ -4,7 +4,7 @@ DATA CLEANING: 2018, 2019
 
 
 ---------------------------------------------------------------------------
--- 2018
+------ 2018
 ---------------------------------------------------------------------------
 
 
@@ -126,7 +126,7 @@ WHERE    Book_Series LIKE "Hannibal%"
 
 
 ---------------------------------------------------------------------------
--- 2019
+----- 2019
 ---------------------------------------------------------------------------
 
 
@@ -135,6 +135,48 @@ RENAME COLUMN Author_Sex TO Author_Gender
             
 ALTER TABLE   `booklists.books_2019`
 RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Title, Book_Author, Author_From, Author_Ethnicity
+FROM     `booklists.books_2019`
+WHERE    Book_Title = "Milk and Honey"
+
+----- «South Asia» | ETHNICITY DATA SHOULD BE ADJECTIVES.
+
+UPDATE   `booklists.books_2019`
+SET      Author_From = "Canada, India",
+         Author_Ethnicity = "Canadian, Indian, South Asian"
+WHERE    Book_Title = "Milk and Honey"
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Title, Book_Author, Author_From, Author_Ethnicity
+FROM     `booklists.books_2019`
+WHERE    Author_From LIKE "United%" AND Author_From NOT LIKE "%Kingdom"
+ORDER BY Author_From
+
+UPDATE   `booklists.books_2019`
+SET      Author_From = "United States"
+WHERE    Book_Author = "Alice Walker" OR Book_Author = "Tiffany Haddish"
+
+
+---------------------------------------------------------------------------
+
+
+SELECT  Book_Title, Book_Author, Author_From, Author_Ethnicity
+FROM    `booklists.books_2019`
+WHERE   Book_Title LIKE "%Mice%" 
+
+----- «John Steinneck» | ‹STEINBECK› IS SPELLED INCORRECTLY.
+
+UPDATE  `booklists.books_2019`
+SET     Book_Author = "John Steinbeck"
+WHERE   Book_Title LIKE "%Mice%" 
 
 
 ---------------------------------------------------------------------------
@@ -207,7 +249,6 @@ SET      Book_Theme = CONCAT(
          ", Sisterhood, Womanhood; Concord, Massachusetts (1860s)")
 WHERE    Book_Title = "Little Women"
 
-----------
 
 UPDATE   `booklists.books_2019`
 SET      Book_Genre = CONCAT(
@@ -223,20 +264,17 @@ SET      Book_Genre = CONCAT(
          Original_Title = Alternative_Title
 WHERE    Book_Title LIKE "%Psyche"
 
-----------
 
 UPDATE   `booklists.books_2019`
 SET      Book_Theme = "Domestic Abuse, Gender Equality, Sexual Identity"
 WHERE    Book_Title = "The Color Purple"
 
-----------
 
 UPDATE   `booklists.books_2019`
 SET      Book_Genre = "Crime, Mystery, Thriller",
          Book_Theme = "Faith, 'Illuminati', Science, Symbology; Rome, Vatican City, Italy"
 WHERE    Book_Title LIKE "Angels%"
 
-----------
 
 UPDATE   `booklists.books_2019`
 SET      Book_Genre = SUBSTR(Book_Genre, 1, 18),
