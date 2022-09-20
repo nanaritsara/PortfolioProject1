@@ -186,7 +186,7 @@ SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title
 FROM     `booklists.books_2019`
 WHERE    Book_Author = "Haruki Murakami"
 
--- «After The Quake» | ‹The› SHOULD BE WRITTEN IN LOWERCASE.
+----- «After The Quake» | ‹The› SHOULD BE WRITTEN IN LOWERCASE.
 
 UPDATE   `booklists.books_2019`
 SET      Book_Title = CONCAT("After ", LOWER(SUBSTR(Book_Title, 7, 3)), " Quake"),
@@ -205,7 +205,7 @@ SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title
 FROM     `booklists.books_2019`
 WHERE    Book_Author = "Dan Brown"
 
--- «Robert Landon» | ‹Langdon› IS SPELLED INCORRECTLY.
+----- «Robert Landon» | ‹Langdon› IS SPELLED INCORRECTLY.
 
 UPDATE   `booklists.books_2019`
 SET      Alternative_Title = "Robert Langdon, Book 1"
@@ -220,7 +220,7 @@ FROM     `booklists.books_2019`
 WHERE    Book_Author = "J. K. Rowling"
 ORDER BY Book_Title
 
--- «The Tales of Beedle The Bard» | ‹The› SHOULD BE WRITTEN IN LOWERCASE.
+----- «The Tales of Beedle The Bard» | ‹The› SHOULD BE WRITTEN IN LOWERCASE.
 
 SELECT   Book_Author, Book_Title
 FROM     `booklists.books_2019`
