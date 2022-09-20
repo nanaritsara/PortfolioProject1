@@ -1,20 +1,10 @@
 /*
-DATA CLEANING: 2018, 2019
+DATA CLEANING: 2018, 2019, 2020, 2021, 2022, YEARS UNKNOWN
 */
 
 
 ---------------------------------------------------------------------------
 ------ 2018
----------------------------------------------------------------------------
-
-
-ALTER TABLE   `booklists.books_2018`
-RENAME COLUMN Author_Sex TO Author_Gender
-            
-ALTER TABLE   `booklists.books_2018`
-RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
-
-
 ---------------------------------------------------------------------------
 
 
@@ -82,76 +72,12 @@ SET      Alternative_Title =
           WHERE   Book_Title LIKE "%Carol")
 WHERE    Book_Title LIKE "%Pan"
 
-/*
------ I ACCIDENTALLY DELETED THE ENTIRE ROW OF «A Christmas Carol» INSTEAD OF JUST ONE CELL.
-
-INSERT INTO   `booklists.books_2018`
-         (Reading_Year, Reading_Order, Book_Author, Book_Title, Page_Counts, 
-          Author_Gender, Author_From, Author_Ethnicity, Protagonist_Gender, Protagonist_Nationality, 
-          Alternative_Title, Original_Title, Fiction, Non_Fiction,
-          Book_Type, Book_Genre, Book_Theme, Reading_Language, Original_Language, Reading_Book_Format)
-VALUES   (2018, 11, "Charles Dickens", "A Christmas Carol", 68,
-          "M", "United Kingdom", "Caucasian, European, White", "M", "British",
-          "A Christmas Carol. In Prose. Being a Ghost Story of Christmas",
-          "A Christmas Carol", TRUE, FALSE, "Novella","Classics", 
-          "Christmas, Ghost Story, Redemption", "English", "English", "Paperback")
-*/
-
-
----------------------------------------------------------------------------
-
-
-UPDATE   `booklists.books_2018`
-SET      Book_Genre = CONCAT("Literary, ",
-         (SELECT  Book_Genre
-          FROM    `booklists.books_2018`
-          WHERE   Book_Title = "The Fault in Our Stars"))
-WHERE    Book_Title = "The Fault in Our Stars"
-
-
-UPDATE   `booklists.books_2018`
-SET      Book_Genre = CONCAT(
-         (SELECT  Book_Theme
-          FROM    `booklists.books_2018`
-          WHERE   Book_Series LIKE "Hannibal%"),
-         ", ",
-         (SELECT  Book_Genre
-          FROM    `booklists.books_2018`
-          WHERE   Book_Series LIKE "Hannibal%")),
-         Book_Theme = "Serial Killer Investigation"  
-WHERE    Book_Series LIKE "Hannibal%"
-
 
 
 
 
 ---------------------------------------------------------------------------
 ----- 2019
----------------------------------------------------------------------------
-
-
-ALTER TABLE   `booklists.books_2019`
-RENAME COLUMN Author_Sex TO Author_Gender
-            
-ALTER TABLE   `booklists.books_2019`
-RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
-
-
----------------------------------------------------------------------------
-
-
-SELECT   Book_Title, Book_Author, Author_From, Author_Ethnicity
-FROM     `booklists.books_2019`
-WHERE    Book_Title = "Milk and Honey"
-
------ «South Asia» | ETHNICITY DATA SHOULD BE ADJECTIVES.
-
-UPDATE   `booklists.books_2019`
-SET      Author_From = "Canada, India",
-         Author_Ethnicity = "Canadian, Indian, South Asian"
-WHERE    Book_Title = "Milk and Honey"
-
-
 ---------------------------------------------------------------------------
 
 
@@ -163,20 +89,6 @@ ORDER BY Author_From
 UPDATE   `booklists.books_2019`
 SET      Author_From = "United States"
 WHERE    Book_Author = "Alice Walker" OR Book_Author = "Tiffany Haddish"
-
-
----------------------------------------------------------------------------
-
-
-SELECT  Book_Title, Book_Author, Author_From, Author_Ethnicity
-FROM    `booklists.books_2019`
-WHERE   Book_Title LIKE "%Mice%" 
-
------ «John Steinneck» | ‹STEINBECK› IS SPELLED INCORRECTLY.
-
-UPDATE  `booklists.books_2019`
-SET     Book_Author = "John Steinbeck"
-WHERE   Book_Title LIKE "%Mice%" 
 
 
 ---------------------------------------------------------------------------
@@ -196,20 +108,6 @@ SET      Book_Title = CONCAT("After ", LOWER(SUBSTR(Book_Title, 7, 3)), " Quake"
           WHERE   Book_Author = "Haruki Murakami"),
          ": Stories")
 WHERE    Book_Author = "Haruki Murakami"
-
-
----------------------------------------------------------------------------
-
-
-SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title   
-FROM     `booklists.books_2019`
-WHERE    Book_Author = "Dan Brown"
-
------ «Robert Landon» | ‹Langdon› IS SPELLED INCORRECTLY.
-
-UPDATE   `booklists.books_2019`
-SET      Alternative_Title = "Robert Langdon, Book 1"
-WHERE    Book_Author = "Dan Brown"
 
 
 ---------------------------------------------------------------------------
@@ -242,15 +140,6 @@ WHERE   Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"
 
 
 UPDATE   `booklists.books_2019`
-SET      Book_Theme = CONCAT(
-         (SELECT  Book_Theme
-          FROM    `booklists.books_2019`
-          WHERE   Book_Title = "Little Women"),
-         ", Sisterhood, Womanhood; Concord, Massachusetts (1860s)")
-WHERE    Book_Title = "Little Women"
-
-
-UPDATE   `booklists.books_2019`
 SET      Book_Genre = CONCAT(
          (SELECT  Book_Genre
           FROM    `booklists.books_2019`
@@ -265,62 +154,11 @@ SET      Book_Genre = CONCAT(
 WHERE    Book_Title LIKE "%Psyche"
 
 
-UPDATE   `booklists.books_2019`
-SET      Book_Theme = "Domestic Abuse, Gender Equality, Sexual Identity"
-WHERE    Book_Title = "The Color Purple"
-
-
-UPDATE   `booklists.books_2019`
-SET      Book_Genre = "Crime, Mystery, Thriller",
-         Book_Theme = "Faith, 'Illuminati', Science, Symbology; Rome, Vatican City, Italy"
-WHERE    Book_Title LIKE "Angels%"
-
-
-UPDATE   `booklists.books_2019`
-SET      Book_Genre = SUBSTR(Book_Genre, 1, 18),
-         Book_Theme = CONCAT("Family, Gender Roles, ",
-         (SELECT  Book_Theme
-          FROM    `booklists.books_2019`
-          WHERE   Book_Title = "Jane Eyre"),  
-         ", Social Position; Northern England")
-WHERE    Book_Title = "Jane Eyre"
-
-
 
 
 
 ---------------------------------------------------------------------------
 ------ 2020
----------------------------------------------------------------------------
-
-
-ALTER TABLE   `booklists.books_2020`
-RENAME COLUMN Author_Sex TO Author_Gender
-            
-ALTER TABLE   `booklists.books_2020`
-RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
-
-
----------------------------------------------------------------------------
-
-
-SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title
-FROM     `booklists.books_2020`
-WHERE    Book_Author LIKE "%Hemingway" OR Book_Title LIKE "%Grinch%"
-
------ «The Old Man and The Sea», «How The Grinch Stole Christmas!» | ‹The› SHOULD BE WRITTEN IN LOWERCASE.
-
-UPDATE   `booklists.books_2020` 
-SET      Book_Title = "The Old Man and the Sea",
-         Original_Title = Book_Title
-WHERE    Book_Author LIKE "%Hemingway"
-
-UPDATE   `booklists.books_2020` 
-SET      Book_Title = "How the Grinch Stole Christmas!",
-         Original_Title = Book_Title
-WHERE    Book_Title LIKE "%Grinch%"
-
-
 ---------------------------------------------------------------------------
 
 
@@ -346,29 +184,6 @@ WHERE    Book_Title LIKE "%Law%" OR Original_Title LIKE "%Law%"
 UPDATE   `booklists.books_2020` 
 SET      Book_Title = "One Hundred Years of Solitude"
 WHERE    Reading_Order = 25
-
-
----------------------------------------------------------------------------
-
-
-SELECT   Reading_Order, Book_Author, Book_Title, Alternative_Title, Original_Title   
-FROM     `booklists.books_2020`
-WHERE    Book_Author = "Dan Brown"
-ORDER BY Reading_Order
-
------ «Robert Landon» | ‹Langdon› IS SPELLED INCORRECTLY.
-
-UPDATE   `booklists.books_2020`
-SET      Alternative_Title = "Robert Langdon, Book 3"
-WHERE    Reading_Order = 20
-
-UPDATE   `booklists.books_2020`
-SET      Alternative_Title = "Robert Langdon, Book 4"
-WHERE    Reading_Order = 21
-
-UPDATE   `booklists.books_2020`
-SET      Alternative_Title = "Robert Langdon, Book 5"
-WHERE    Reading_Order = 22
 
 
 ---------------------------------------------------------------------------
@@ -401,21 +216,6 @@ WHERE    Book_Title LIKE "%Deathly%"
 ---------------------------------------------------------------------------
 
 
-UPDATE   `booklists.books_2020`
-SET      Book_Theme = CONCAT("Bisexuality, Coming-of-Age, ",
-         (SELECT  Book_Theme
-          FROM    `booklists.books_2020`
-          WHERE   Book_Title = "Call Me by Your Name"),
-         ", Jewish Italian American Family, Romance ")
-WHERE    Book_Title = "Call Me by Your Name"
-
-
-UPDATE   `booklists.books_2020`
-SET      Book_Title = TRIM(Book_Title),
-         Book_Theme = "American Family, Motherhood, Social Class, Race; Shaker Heights, Ohio (1988)"
-WHERE    Book_Title LIKE "%Fires%"
-
-
 SELECT   LENGTH("Crime") AS First_Half, LENGTH(", Thriller") AS Second_Half 
 
 UPDATE   `booklists.books_2020`
@@ -432,37 +232,6 @@ SET      Book_Genre = CONCAT(
           WHERE   Book_Title = "Inferno"))
 WHERE    Book_Title = "Inferno"
 
-UPDATE   `booklists.books_2020`
-SET      Book_Theme = "Freemasonry, Symbology; Washington, D.C."
-WHERE    Original_Title = "The Lost Symbol"
-
-UPDATE   `booklists.books_2020`
-SET      Book_Theme = "Dante's 'Divine Comedy', Symbology; Florence, Italy; Istanbul, Turkey"
-WHERE    Original_Title = "Inferno"
-
-UPDATE   `booklists.books_2020`
-SET      Original_Title = RTRIM(Original_Title),
-         Book_Theme = "Atheism, Symbology; Catalonia, Spain"
-WHERE    Book_Title = "Origin"
-
-UPDATE   `booklists.books_2020`
-SET      Book_Genre = 
-         (SELECT  Book_Genre
-          FROM    `booklists.books_2020`
-          WHERE   Book_Title = "Inferno")
-WHERE    Original_Title IN ("The Lost Symbol", "Origin")
-
-
-UPDATE   `booklists.books_2020`
-SET      Book_Author = RTRIM(Book_Author),
-         Book_Theme = "Coming-of-Age, Gothic Novel, Naivety, Society; Bath, England"
-WHERE    Book_Author LIKE "Jane%"
-
-
-UPDATE   `booklists.books_2020`
-SET      Book_Theme = "Coming-of-Age, Depression, Sisterhood; Grosse Pointe, Michigan (1970s)"
-WHERE    Book_Title LIKE "%Virgin%"
-
 
 
 
@@ -472,20 +241,9 @@ WHERE    Book_Title LIKE "%Virgin%"
 --------------------------------------------------------------------------- 
 
 
-ALTER TABLE   `booklists.books_2021`
-RENAME COLUMN Author_Sex TO Author_Gender
-            
-ALTER TABLE   `booklists.books_2021`
-RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
-
-
----------------------------------------------------------------------------
-
-
 SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title
 FROM     `booklists.books_2021`
-WHERE    Book_Title LIKE "%Duke%" OR   
-         Book_Title LIKE "Stillness%" OR
+WHERE    Book_Title LIKE "Stillness%" OR
          Book_Title LIKE "%Crawdads%" OR
          Book_Title LIKE "Turtles%"
 
@@ -525,33 +283,31 @@ WHERE    Book_Title LIKE "%Duke%" OR Book_Title LIKE "%Zombies"
 ----- ‹And› SHOULD BE WRITTEN IN LOWERCASE.
 
 UPDATE   `booklists.books_2021` 
+SET      Book_Title = 
+         (SELECT    Original_Title
+          FROM      `booklists.books_2021`
+          WHERE     Book_Title LIKE "%Duke%")    
+WHERE    Book_Title LIKE "%Duke%" 
+
+UPDATE   `booklists.books_2021` 
 SET      Original_Title =
          (SELECT   REPLACE(Original_Title, "And", "and")
           FROM     `booklists.books_2021`
           WHERE    Original_Title LIKE "%Zombies"),
          Book_Title = Original_Title 
-WHERE    Original_Title LIKE "%Zombies"
+WHERE    Original_Title LIKE "%Zombies" 
 
-UPDATE   `booklists.books_2021` 
-SET      Book_Title = 
-         (SELECT    Original_Title
-          FROM      `booklists.books_2021`
-          WHERE     Book_Title LIKE "%Duke%")    
-WHERE    Book_Title LIKE "%Duke%"  
+UPDATE   `booklists.books_2021`
+SET      Book_Type = CONCAT(
+         (SELECT  SUBSTR(Book_Type, 1, 7)
+          FROM    `booklists.books_2021`
+          WHERE   Book_Title LIKE "%Zombies"),
+         ", Parody Novel, Retelling"),
+         Book_Theme = "English Family, Romance, Zombies; 'Pride and Prejudice'"
+WHERE    Book_Title LIKE "%Zombies"
 
 
 ---------------------------------------------------------------------------
-
-
-UPDATE  `booklists.books_2021`
-SET      Alternative_Title = "The War of Art: Break Through the Blocks and Win Your Inner Creative Battles",
-         Book_Type = "Esoteric Book", Book_Theme = "Creativity" 
-WHERE    Book_Title = "The War of Art"
-
-
-UPDATE   `booklists.books_2021`
-SET      Book_Theme = "Identity Issue, Mental Health, Multiracial American Family; Ohio (1977)" 
-WHERE    Book_Title = "Everything I Never Told You"
 
 
 UPDATE   `booklists.books_2021`
@@ -573,37 +329,6 @@ SET      Book_Genre = CONCAT("Historical, ",
 WHERE    Book_Title = "The Signature of All Things"
 
 
-UPDATE   `booklists.books_2021`
-SET      Book_Genre = "Biographical, Historical",
-         Book_Theme = "Auschwitz-Birkenau Concentration Camp (1942-1945)"
-WHERE    Book_Title LIKE "%Ausschwitz"
-
-
-UPDATE   `booklists.books_2021`
-SET      Book_Theme = "Identity Issue, Mental Health, Obsessive Compulsive Disorder"
-WHERE    Book_Title LIKE "Turtles%"
-
-
-UPDATE   `booklists.books_2021`
-SET      Book_Genre = "Legal Story, Thriller",
-         Book_Theme = "Crime, Death Penalty, Ku Klux Klan; Mississippi (1960s)"
-WHERE    Original_Title = "The Chamber"
-
-
-UPDATE  `booklists.books_2021`
-SET      Book_Type = "Novel, Retelling",
-         Book_Genre = "Fantasy, Historical, Mythology"
-WHERE    Book_Author = "Madeline Miller"
-
-UPDATE  `booklists.books_2021`
-SET      Book_Theme = "Greek Mythology; 'Iliad'"
-WHERE    Book_Title LIKE "%Achilles"
-
-UPDATE  `booklists.books_2021`
-SET      Book_Theme = "Greek Mythology; 'Odyssey'"
-WHERE    Book_Title = "Circe"
-
-
 UPDATE  `booklists.books_2021`
 SET      Book_Genre = CONCAT(
          (SELECT  Book_Genre
@@ -612,16 +337,6 @@ SET      Book_Genre = CONCAT(
          ", Fantasy, Speculative Fiction"),
          Book_Theme = "Suppression of Women's Reproductive Rights, Totalitarian Society"
 WHERE    Book_Title = "The Handmaid's Tale"
-
-
-UPDATE   `booklists.books_2021`
-SET      Book_Type = CONCAT(
-         (SELECT  SUBSTR(Book_Type, 1, 7)
-          FROM    `booklists.books_2021`
-          WHERE   Book_Title LIKE "%Zombies"),
-         ", Parody Novel, Retelling"),
-         Book_Theme = "English Family, Romance, Zombies; 'Pride and Prejudice'"
-WHERE    Book_Title LIKE "%Zombies"
 
 
 UPDATE    `booklists.books_2021`
@@ -643,21 +358,25 @@ SET      Book_Genre = SUBSTR(Book_Genre, 1, 12),
 WHERE    Book_Title = "Educated"
 
 
+UPDATE  `booklists.books_2021`
+SET      Book_Type = "Novel, Retelling",
+         Book_Genre = "Fantasy, Historical, Mythology"
+WHERE    Book_Author = "Madeline Miller"
+
+UPDATE  `booklists.books_2021`
+SET      Book_Theme = "Greek Mythology; 'Iliad'"
+WHERE    Book_Title LIKE "%Achilles"
+
+UPDATE  `booklists.books_2021`
+SET      Book_Theme = "Greek Mythology; 'Odyssey'"
+WHERE    Book_Title = "Circe"
+
+
 
 
 
 ---------------------------------------------------------------------------
 ----- 2022
----------------------------------------------------------------------------
-
-
-ALTER TABLE   `booklists.books_2022`
-RENAME COLUMN Author_Sex TO Author_Gender
-            
-ALTER TABLE   `booklists.books_2022`
-RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
-
-
 ---------------------------------------------------------------------------
 
 
@@ -741,15 +460,6 @@ SET      Book_Theme = CONCAT(
 WHERE    Book_Title = "The Ghost Bride"
 
 
-UPDATE  `booklists.books_2022`
-SET      Book_Theme = CONCAT(
-         (SELECT  Book_Theme
-          FROM    `booklists.books_2022`
-          WHERE   Book_Title = "City of Girls"),
-         "; New York City Theater World (1940s)")
-WHERE    Book_Title = "City of Girls"
-
-
 ---------------------------------------------------------------------------
 
 
@@ -779,16 +489,6 @@ WHERE     Book_Author = "Julia Quinn" AND Alternative_Title LIKE "%7"
 
 ---------------------------------------------------------------------------
 ---- YEARS UNKNOWN
----------------------------------------------------------------------------
-
-
-ALTER TABLE   `booklists.books_years_unknown`
-RENAME COLUMN Author_Sex TO Author_Gender
-            
-ALTER TABLE   `booklists.books_years_unknown`
-RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
-
-
 ---------------------------------------------------------------------------
 
 
