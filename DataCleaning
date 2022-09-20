@@ -1,5 +1,5 @@
 /*
-DATA CLEANING: 2018, 2019, 2020, 2021, 2022, YEARS UNKNOWN.
+DATA CLEANING
 SHOWCASE: STRING FUNCTIONS, SUBQUERIES, TABLE ALTERATIONS.
 */
 
@@ -22,10 +22,7 @@ WHERE    Book_Author = "John Green"
 ----- ALTERNATIVE: CHARINDEX().
 
 UPDATE   `booklists.books_2018`
-SET      Book_Title = 
-         (SELECT   SUBSTR(Movie_Adaptation_Seen, 1, 23)
-          FROM     `booklists.books_2018`
-          WHERE    Book_Author = "John Green"),
+SET      Book_Title = SUBSTR(Movie_Adaptation_Seen, 1, 23),
          Original_Title = Book_Title
 WHERE    Book_Author = "John Green" AND Movie_Adaptation_Seen IS NOT NULL 
 
@@ -114,15 +111,8 @@ FROM     `booklists.books_2019`
 WHERE    Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"
 
 UPDATE   `booklists.books_2019`
-SET      Book_Title = 
-         (SELECT  REPLACE(Book_Title,
-                          (SELECT  SUBSTR(Book_Title, -8, 5)
-                           FROM    `booklists.books_2019`
-                           WHERE   Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"), 
-                          "the B")
-          FROM    `booklists.books_2019`
-          WHERE   Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%")
-WHERE   Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"
+SET      Book_Title = REPLACE(Book_Title, SUBSTR(Book_Title, -8, 5))
+WHERE    Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"
 
 
 ---------------------------------------------------------------------------
@@ -152,15 +142,9 @@ ORDER BY Reading_Order
 ----- ‹Year› AND ‹Law› SHOULD BE WRITTEN IN PLURAL.
 
 UPDATE   `booklists.books_2020` 
-SET      Book_Title = 
-         (SELECT   REPLACE("The Seven Spiritual Law of Success", "Law", "Laws")
-          FROM     `booklists.books_2020`
-          WHERE    Book_Title LIKE "%Law%"),
-         Original_Title = 
-         (SELECT   REPLACE("The Seven Spiritual Law of Success", "Law", "Laws")
-          FROM     `booklists.books_2020`
-          WHERE    Original_Title LIKE "%Law%")
-WHERE    Book_Title LIKE "%Law%" OR Original_Title LIKE "%Law%"
+SET      Book_Title = REPLACE(Book_Title, "Law", "Laws")
+         Original_Title = Book_Title
+WHERE    Book_Title LIKE "%Law%"
 
 UPDATE   `booklists.books_2020` 
 SET      Book_Title = "One Hundred Years of Solitude"
@@ -340,7 +324,7 @@ WHERE    Book_Title LIKE "%Tiger%" OR Book_Title LIKE "%Ghost%"
 ----- LEADING SPACE.
 
 UPDATE   `booklists.books_2022`
-SET      Author_Ethnicity = LTRIM(Author_Ethnicity)
+SET      Author_Ethnicity = TRIM(Author_Ethnicity)
 WHERE    Book_Title LIKE "%Tiger%" OR Book_Title LIKE "%Ghost%"
 
 
