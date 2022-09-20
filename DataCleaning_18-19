@@ -1,0 +1,250 @@
+/*
+DATA CLEANING: 2018, 2019
+*/
+
+
+---------------------------------------------------------------------------
+-- 2018
+---------------------------------------------------------------------------
+
+
+ALTER TABLE   `booklists.books_2018`
+RENAME COLUMN Author_Sex TO Author_Gender
+            
+ALTER TABLE   `booklists.books_2018`
+RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title, Movie_Adaptation_Seen      
+FROM     `booklists.books_2018`
+WHERE    Book_Author = "John Green" AND Movie_Adaptation_Seen IS NOT NULL
+
+----- "The Fault In Our Stars" | 'IN' SHOULD BE WRITTEN IN LOWERCASE.
+
+SELECT   INSTR(Movie_Adaptation_Seen, " (2014)") AS Position 
+FROM     `booklists.books_2018`
+WHERE    Book_Author = "John Green"
+
+----- BigQuery DOES NOT SEEM TO RECOGNIZE CHARINDEX().
+
+UPDATE   `booklists.books_2018`
+SET      Book_Title = 
+         (SELECT   SUBSTR(Movie_Adaptation_Seen, 1, 23)
+          FROM     `booklists.books_2018`
+          WHERE    Book_Author = "John Green"),
+         Original_Title = Book_Title
+WHERE    Book_Author = "John Green" AND Movie_Adaptation_Seen IS NOT NULL 
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Author, Book_Title, SPLIT(Book_Genre, ", ") AS Genre_Spectrum, Book_Theme
+FROM     `booklists.books_2018`
+
+UPDATE   `booklists.books_2018` 
+SET      Book_Genre = CONCAT_WS(", ",
+         (SELECT  Book_Genre
+          FROM    `booklists.books_2018`
+          WHERE   Book_Title = "Der Zahir"), 
+         "Psychological")
+WHERE    Book_Title = "Der Zahir"
+
+/*
+UPDATE   `booklists.books_2018` 
+SET      Book_Genre = CONCAT(
+         (SELECT  Book_Genre
+          FROM    `booklists.books_2018`
+          WHERE   Book_Title = "Der Zahir"), 
+         ", Psychological")
+WHERE    Book_Title = "Der Zahir"
+*/
+
+
+---------------------------------------------------------------------------
+
+
+UPDATE   `booklists.books_2018`
+SET      Alternative_Title = 
+         (SELECT  Alternative_Title
+          FROM    `booklists.books_2018`
+          WHERE   Book_Title LIKE "%Carol")
+WHERE    Book_Title LIKE "%Pan"
+
+/*
+DELETE
+FROM     `booklists.books_2018`
+WHERE    Alternative_Title = "The Boy Who Wouldn't Grow Up" AND Book_Title NOT LIKE "Peter Pan"
+
+----- I ACCIDENTALLY DELETED THE ENTIRE ROW INSTEAD OF JUST ONE CELL.
+
+INSERT INTO   `booklists.books_2018`
+         (Reading_Year, Reading_Order, Book_Author, Book_Title,
+          Page_Counts, Author_Gender, Author_From, Author_Ethnicity,  
+          Protagonist_Gender, Protagonist_Nationality, 
+          Alternative_Title, Original_Title, Fiction, Non_Fiction,
+          Book_Type, Book_Genre, Book_Theme, 
+          Reading_Language, Original_Language, Reading_Book_Format)
+VALUES   (2018, 11, "Charles Dickens", "A Christmas Carol",
+          68, "M", "United Kingdom", "Caucasian, European, White", "M", "British",
+          "A Christmas Carol. In Prose. Being a Ghost Story of Christmas",
+          "A Christmas Carol", TRUE, FALSE,
+          "Novella","Classics", "Christmas, Ghost Story, Redemption",
+          "English", "English", "Paperback")
+*/
+
+
+---------------------------------------------------------------------------
+
+
+UPDATE   `booklists.books_2018`
+SET      Book_Genre = CONCAT("Literary, ",
+         (SELECT  Book_Genre
+          FROM    `booklists.books_2018`
+          WHERE   Book_Title = "The Fault in Our Stars"))
+WHERE    Book_Title = "The Fault in Our Stars"
+
+
+UPDATE   `booklists.books_2018`
+SET      Book_Genre = CONCAT(
+         (SELECT  Book_Theme
+          FROM    `booklists.books_2018`
+          WHERE   Book_Series LIKE "Hannibal%"),
+         ", ",
+         (SELECT  Book_Genre
+          FROM    `booklists.books_2018`
+          WHERE   Book_Series LIKE "Hannibal%")),
+         Book_Theme = "Serial Killer Investigation"  
+WHERE    Book_Series LIKE "Hannibal%"
+
+
+
+
+
+---------------------------------------------------------------------------
+-- 2019
+---------------------------------------------------------------------------
+
+
+ALTER TABLE   `booklists.books_2019`
+RENAME COLUMN Author_Sex TO Author_Gender
+            
+ALTER TABLE   `booklists.books_2019`
+RENAME COLUMN Protagonist_Sex TO Protagonist_Gender
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title     
+FROM     `booklists.books_2019`
+WHERE    Book_Author = "Haruki Murakami"
+
+-- "After The Quake" | 'THE' SHOULD BE WRITTEN IN LOWERCASE.
+-- ↓
+
+UPDATE   `booklists.books_2019`
+SET      Book_Title = "After the Quake"
+WHERE    Book_Author = "Haruki Murakami"
+
+UPDATE   `booklists.books_2019`
+SET      Alternative_Title = CONCAT("After ", LOWER(SUBSTR(Book_Title, 7, 3)), " Quake: Stories")
+WHERE    Book_Author = "Haruki Murakami"
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title   
+FROM     `booklists.books_2019`
+WHERE    Book_Author = "Dan Brown"
+
+-- "Robert Landon" | 'LANDON' SHOULD BE SPELLED WITH 'G'.
+-- ↓
+
+UPDATE   `booklists.books_2019`
+SET      Alternative_Title = "Robert Langdon, Book 1"
+WHERE    Book_Author = "Dan Brown"
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Book_Author, Book_Title, Alternative_Title, Original_Title
+FROM     `booklists.books_2019`
+WHERE    Book_Author = "J. K. Rowling"
+ORDER BY Book_Title
+
+-- "The Tales of Beedle The Bard" | 'THE' SHOULD BE WRITTEN IN LOWERCASE.
+-- ↓
+
+SELECT   Book_Author, Book_Title
+FROM     `booklists.books_2019`
+WHERE    Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"
+
+UPDATE   `booklists.books_2019`
+SET      Book_Title = 
+         (SELECT   REPLACE(Book_Title,
+             (SELECT   SUBSTR(Book_Title, -8, 5)
+              FROM     `booklists.books_2019`
+              WHERE    Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"), 
+              "the B")
+          FROM     `booklists.books_2019`
+          WHERE    Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%")
+WHERE Book_Author = "J. K. Rowling" AND Book_Title NOT LIKE "Harry Potter%"
+
+
+UPDATE   `booklists.books_2019`
+SET      Book_Theme = CONCAT(
+         (SELECT  Book_Theme
+          FROM    `booklists.books_2019`
+          WHERE   Book_Title = "Little Women"),
+         ", Sisterhood, Womanhood; Concord, Massachusetts (1860s)")
+WHERE    Book_Title = "Little Women"
+
+----------
+
+UPDATE   `booklists.books_2019`
+SET      Book_Genre = CONCAT(
+         (SELECT  Book_Genre
+          FROM    `booklists.books_2019`
+          WHERE   Book_Title LIKE "%Psyche"),
+         ", Fantasy, Mythology"),
+         Book_Theme = CONCAT(
+         (SELECT  Book_Theme
+          FROM    `booklists.books_2019`
+          WHERE   Book_Title LIKE "%Psyche"),
+         "; 'Metamorphoses'"),
+         Original_Title = Alternative_Title
+WHERE    Book_Title LIKE "%Psyche"
+----------
+
+UPDATE   `booklists.books_2019`
+SET      Book_Theme = "Domestic Abuse, Gender Equality, Sexual Identity"
+WHERE    Book_Title = "The Color Purple"
+
+----------
+
+UPDATE   `booklists.books_2019`
+SET      Book_Genre = "Crime, Mystery, Thriller",
+         Book_Theme = "Faith, 'Illuminati', Science, Symbology; Rome, Vatican City, Italy"
+WHERE    Book_Title LIKE "Angels%"
+
+----------
+
+UPDATE   `booklists.books_2019`
+SET      Book_Genre = SUBSTR(Book_Genre, 1, 18),
+         Book_Theme = CONCAT("Family, Gender Roles, ",
+         (SELECT  Book_Theme
+          FROM    `booklists.books_2019`
+          WHERE   Book_Title = "Jane Eyre"),  
+         ", Social Position; Northern England")
+WHERE    Book_Title = "Jane Eyre"
+
+----------
+
+
+
