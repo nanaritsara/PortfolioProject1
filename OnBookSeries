@@ -69,7 +69,6 @@ SET      Book_Order = 3,
          Deuteragonist_Age = 22
 WHERE    Book_Title = "An Offer From A Gentleman"
 
-
 UPDATE   `booklists.bridgerton_series` 
 SET      Book_Order = 4,
          Protagonist = "Colin",
@@ -176,5 +175,113 @@ ORDER BY Protagonist
 ---------------------------------------------------------------------------
 ----- ROBERT LANGDON SERIES
 ---------------------------------------------------------------------------
+
+
+CREATE TABLE   `booklists.robert_langdon_series`
+         (Book_Author STRING,
+          Book_Serie STRING,
+          Book_Order INTEGER,
+          Book_Title STRING,
+          Page_Count INTEGER,
+          Protagonist STRING,
+          Deuteragonist STRING,
+          Tritagonist STRING,
+          Setting_City STRING,
+          Setting_Country STRING,
+          Key_Artwork STRING)
+
+
+INSERT INTO   `booklists.robert_langdon_series` 
+         (Book_Author, Book_Serie, Book_Title, Page_Count)
+SELECT   Book_Author, Book_Series, Book_Title, Page_Counts
+FROM     `booklists.books_2019` 
+WHERE    Book_Series = "Robert Langdon" 
+
+
+INSERT INTO   `booklists.robert_langdon_series` 
+         (Book_Author, Book_Serie, Book_Title, Page_Count)
+SELECT   Book_Author, Book_Series, Book_Title, Page_Counts
+FROM     `booklists.books_2020` 
+WHERE    Book_Series = "Robert Langdon
+
+UPDATE   `booklists.robert_langdon_series` 
+SET      Book_Title = 
+         (SELECT  Original_Title 
+          FROM    `booklists.books_2020`
+          WHERE   Book_Title = "Das verlorene Symbol") 
+WHERE    Book_Title = "Das verlorene Symbol"    
+
+
+INSERT INTO   `booklists.robert_langdon_series` 
+         (Book_Author, Book_Serie, Book_Title, Page_Count)
+SELECT   Book_Author, Book_Series, Book_Title, Page_Counts
+FROM     `booklists.books_years_unknown`
+WHERE    Book_Series = "Robert Langdon" 
+
+
+----------
+
+
+UPDATE   `booklists.robert_langdon_series` 
+SET      Protagonist = Book_Serie
+WHERE    Book_Serie = "Robert Langdon" 
+
+
+----------
+
+
+UPDATE   `booklists.robert_langdon_series` 
+SET      Book_Order = 1,
+         Deuteragonist = "Vittoria Vetra",
+         Tritagonist = "Camerlengo Carlo Ventresca, Maximilian Kohler",
+         Setting_City = "Rome, Vatican City",
+         Setting_Country = "Italy",
+WHERE    Book_Title = "Angels & Demons" 
+
+UPDATE   `booklists.robert_langdon_series` 
+SET      Book_Order = 2,
+         Deuteragonist = "Sophie Neveu",
+         Tritagonist = "Silas, Sir Leigh Teabing",
+         Setting_City = "Condécort, London, Paris, Rosslyn",
+         Setting_Country = "France, Scotland, United Kingdom",
+         Key_Artwork = "Leonardo da Vinci: Madonna of the Rocks, Mona Lisa, The Last Supper, Vitruvian Man"
+WHERE    Book_Title = "The Da Vinci Code" 
+
+UPDATE   `booklists.robert_langdon_series` 
+SET      Book_Order = 3,
+         Deuteragonist = "Katherine Solomon",
+         Tritagonist = "Inoue Sato, Mal'akh, Warren Bellamy",
+         Setting_City = "Washington, D.C.",
+         Setting_Country = "United States",
+         Key_Artwork = "Albrecht Dürer: Melancholia I"
+WHERE    Book_Title = "The Lost Symbol" 
+
+UPDATE   `booklists.robert_langdon_series` 
+SET      Book_Order = 4,
+         Deuteragonist = "Sienna Brooks",
+         Tritagonist = "Bertrand Zobrist, Elizabeth Sinskey",
+         Setting_City = "Florence, Istanbul",
+         Setting_Country = "Italy, Turkey",
+         Key_Artwork = "Dante Alighieri: Divine Comedy, Giorgio Vasari: The Battle of Marciano, Sandro Botticelli: Map of Hell"
+WHERE    Book_Title = "Inferno"
+
+UPDATE   `booklists.robert_langdon_series` 
+SET      Book_Order = 5,
+         Deuteragonist = "Ambra Vidal",
+         Tritagonist = "Admiral Luis Ávila, Bishop Antonio Valdespino, Edmond Kirsch, Winston",
+         Setting_City = "Bilbao, Catalonia",
+         Setting_Country = "Spain",
+         Key_Artwork = "William Blake: The Ancient of Days"
+WHERE    Book_Title = "Origin"
+
+
+----------
+
+
+SELECT   Book_Author, Book_Order, Book_Title, Page_Count, SPLIT(Setting_Country, ", ") AS Setting_Country
+FROM     `booklists.robert_langdon_series`
+ORDER BY Book_Order
+
+
 
 
