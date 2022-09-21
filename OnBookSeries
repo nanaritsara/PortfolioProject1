@@ -36,7 +36,7 @@ FROM     `booklists.books_2022`
 WHERE    Book_Series = "Bridgerton"
 
 
----------------------------------------------------------------------------
+----------
 
 
 UPDATE   `booklists.bridgerton_series` 
@@ -112,7 +112,7 @@ SET      Book_Order = 7,
 WHERE    Book_Title = "It's In His Kiss"
 
 
----------------------------------------------------------------------------
+----------
 
 
 INSERT INTO    `booklists.bridgerton_series` 
@@ -124,7 +124,7 @@ VALUES   ("Julia Quinn", "Bridgerton", 8, "On The Way To The Wedding", 496,
           "Lucy Abernathy", "F", 20)
 
 
----------------------------------------------------------------------------
+----------
 
 
 UPDATE   `booklists.bridgerton_series`
@@ -132,7 +132,7 @@ SET      Protagonist = CONCAT(Protagonist, " Bridgerton")
 WHERE    Book_Serie = "Bridgerton"
 
 
----------------------------------------------------------------------------
+----------
 
 
 SELECT   Book_Title, Protagonist,
@@ -159,7 +159,7 @@ FROM     `booklists.bridgerton_series`
 ORDER BY Protagonist
 
 
----------------------------------------------------------------------------
+----------
 
 
 SELECT   Book_Title, Protagonist, Deuteragonist, ABS(Protagonist_Age - Deuteragonist_Age) AS Age_Gap
@@ -167,7 +167,7 @@ FROM     `booklists.bridgerton_series`
 ORDER BY Protagonist
 
 
----------------------------------------------------------------------------
+----------
 
 
 
