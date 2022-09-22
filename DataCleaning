@@ -1,6 +1,6 @@
 /*
 DATA CLEANING
-SHOWCASE: STRING FUNCTIONS, SUBQUERIES, TABLE ALTERATIONS.
+SHOWCASE: JOIN'S, STRING FUNCTIONS, SUBQUERIES, TABLE ALTERATIONS.
 */
 
 
@@ -398,6 +398,25 @@ UPDATE    `booklists.books_years_unknown`
 SET       Alternative_Title = "Pride and Prejudice",
           Original_Title = "Pride and Prejudice"
 WHERE     Book_Author = "Jane Austen" AND Book_Title LIKE "Stolz%"
+
+
+---------------------------------------------------------------------------
+
+
+SELECT   Y19.Book_Series, Y19.Book_Genre Genre_Spectrum, YUK.Book_Genre YUK
+FROM     `booklists.books_2019` Y19
+JOIN     `booklists.books_years_unknown` YUK
+ON       Y19.Book_Series = YUK.Book_Series
+WHERE    Y19.Book_Series = "Robert Langdon" OR YUK.Book_Series = "Robert Langdon"
+
+----- [Book_Genre] OF THE SAME [Book_Series] IS NOT IN SYNC.
+
+UPDATE   `booklists.books_years_unknown`
+SET      Book_Genre =
+         (SELECT  Book_Genre
+          FROM    `booklists.books_2019`
+          WHERE   Book_Series = "Robert Langdon")
+WHERE    Book_Series = "Robert Langdon"
 
 
 
