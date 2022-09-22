@@ -1,0 +1,75 @@
+/*
+OBJECTIVE: BOOK AUTHORS
+SHOWCASE: ;
+*/
+
+
+---------------------------------------------------------------------------
+----- WRITERS
+---------------------------------------------------------------------------
+
+
+CREATE TABLE   `booklists.writers`
+         (First_Name STRING,
+          Last_Name STRING,
+          Nationality STRING,
+          Ethnicity STRING,
+          Simple_Classification STRING,
+          Living BOOLEAN,
+          Deceased BOOLEAN, 
+          Book_Counts INTEGER)
+
+
+----------
+
+
+SELECT    DISTINCT Book_Author, Author_From, Author_Ethnicity, COUNT(Book_Title) AS Book_Counts 
+FROM      `booklists.books_2018`
+GROUP BY  Book_Author, Author_From, Author_Ethnicity
+ORDER BY  Book_Author
+
+
+----- SELECT    LENGTH("Asian"), LENGTH("Black"), LENGTH("White") [5]
+          
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    LEFT(Book_Author, INSTR(Book_Author, " ")-1), RIGHT(Book_Author, INSTR(Book_Author, " ")-3), Author_From,
+          "Caucasian, European", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 1
+FROM      `booklists.books_2018`
+WHERE     Book_Author = "Cecelia Ahern"
+
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    LEFT(Book_Author, INSTR(Book_Author, " ")-1), RIGHT(Book_Author, INSTR(Book_Author, " ")-1), Author_From,
+          "Caucasian, European", RIGHT(Author_Ethnicity, 5), FALSE, TRUE, 1
+FROM      `booklists.books_2018`
+WHERE     Book_Author = "Charles Dickens"
+
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    LEFT(Book_Author, INSTR(Book_Author, " ")-1), RIGHT(Book_Author, 4), Author_From,
+          "Caucasian, European", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 1
+FROM      `booklists.books_2018`
+WHERE     Book_Author = "Ingrid Noll"
+
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    "J. M.", "Barrie", Author_From, "Caucasian, European", RIGHT(Author_Ethnicity, 5), FALSE, TRUE, 1
+FROM      `booklists.books_2018`
+WHERE     Book_Author = "J. M. Barrie"
+
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    LEFT(Book_Author, INSTR(Book_Author, " ")-1), RIGHT(Book_Author, 5), Author_From,
+          "Caucasian, North American", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 1
+FROM      `booklists.books_2018`
+WHERE     Book_Author = "John Green"
+
+
+
+
