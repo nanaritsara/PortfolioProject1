@@ -1,6 +1,6 @@
 /*
 DATA CLEANING
-SHOWCASE: JOIN'S, STRING FUNCTIONS, SUBQUERIES, TABLE ALTERATIONS.
+SHOWCASE: JOIN'S, STRING FUNCTIONS, SUBQUERIES, TABLE ALTERATIONS
 */
 
 
@@ -409,13 +409,14 @@ JOIN     `booklists.books_years_unknown` YUK
 ON       Y19.Book_Series = YUK.Book_Series
 WHERE    Y19.Book_Series = "Robert Langdon" OR YUK.Book_Series = "Robert Langdon"
 
------ [Book_Genre] OF THE SAME [Book_Series] IS NOT IN SYNC.
+----- [Book_Genre] OF THE SAME [Book_Series] ARE NOT IN SYNC.
 
 UPDATE   `booklists.books_years_unknown`
 SET      Book_Genre =
          (SELECT  Book_Genre
           FROM    `booklists.books_2019`
-          WHERE   Book_Series = "Robert Langdon")
+          WHERE   Book_Series = "Robert Langdon"),
+         Book_Theme = "Holy Grail; Paris, France"  
 WHERE    Book_Series = "Robert Langdon"
 
 
