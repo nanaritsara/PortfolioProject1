@@ -60,12 +60,12 @@ ORDER BY Page_Counts
 ------ [Q: Which are the smallest and largest books I have read?]
 
 SELECT   MIN(Page_Counts) AS Smallest,  -- [A: 106 pages.] 
-         MAX(Page_Counts) AS Largest    -- [A: 592 pages.]
+         MAX(Page_Counts) AS Largest    -- [A: 768 pages.]
 FROM     `booklists.books_2019`
 
 SELECT   Book_Author, Book_Title, Page_Counts 
 FROM     `booklists.books_2019`
-WHERE    Page_Counts IN (106, 592)
+WHERE    Page_Counts IN (106, 768)
 ORDER BY Page_Counts
 
 
@@ -178,6 +178,9 @@ WHERE    Author_Ethnicity LIKE "%Asian%"
 
 
 
+
+
+
 ---------------------------------------------------------------------------
 ----- [Q: How many books are written by female authors?]
 
@@ -199,6 +202,28 @@ SELECT   CONCAT(ROUND(Percentage, 2), "%") AS ByFemaleAuthors
 FROM     PercentageTable
 
 ------ [A: 19 Books which make up 73.08%.]
+
+
+
+
+
+---------------------------------------------------------------------------
+----- [Q: How many books are of the "Robert Langdon" series?]
+
+WITH     RobertLangdonSeries AS
+         (SELECT   COUNT(Book_Title) AS Y19_Book_Counts, 
+                   (SELECT  COUNT(Book_Title)
+                    FROM    `booklists.books_2020` 
+                    WHERE   Book_Series = "Robert Langdon") AS Y20_Book_Counts,
+                   (SELECT  COUNT(Book_Title)
+                    FROM    `booklists.books_years_unknown`
+                    WHERE   Book_Series = "Robert Langdon") AS YUK_Book_Counts        
+          FROM     `booklists.books_2019` 
+          WHERE    Book_Series = "Robert Langdon")
+SELECT   Y19_Book_Counts, Y20_Book_Counts, YUK_Book_Counts,
+         Y19_Book_Counts + Y20_Book_Counts + YUK_Book_Counts AS Total_Book_Counts
+FROM     RobertLangdonSeries  
+
 
 
 
