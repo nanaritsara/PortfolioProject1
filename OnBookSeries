@@ -1,6 +1,6 @@
 /*
 OBJECTIVE: BOOK SERIES
-SHOWCASE: CASE STATEMENTS, NUMERIC FUNCTIONS, STRING FUNCTIONS
+SHOWCASE: CASE STATEMENTS, CTE'S, NUMERIC FUNCTIONS, STRING FUNCTIONS
 */
 
 
@@ -185,10 +185,6 @@ SELECT   Book_Author, Book_Series, Original_Title, Page_Counts, Movie_Adaptation
 FROM     `booklists.books_years_unknown`
 WHERE    Book_Series = "Robert Langdon" 
 
-
-----------
-
-
 UPDATE   `booklists.robert_langdon_series` 
 SET      Protagonist = Book_Serie
 WHERE    Book_Serie = "Robert Langdon" 
@@ -233,48 +229,115 @@ WHERE    Book_Title = "The Da Vinci Code"
 ----------
 
 
-SELECT   Book_Title, Book_Theme, LENGTH(Book_Theme) Num_Char, INSTR(Book_Theme, ";") As Position
+SELECT   Book_Title, Book_Theme, LENGTH(Book_Theme) Num_Char, INSTR(Book_Theme, ";") As Position, Movie_Adaptation
 FROM     `booklists.books_2020`
 WHERE    Book_Series = "Robert Langdon"
-
-
-
-
-
-UPDATE   `booklists.robert_langdon_series` 
-SET      Book_Order = 3,
-         Deuteragonist = "Katherine Solomon",
-WHERE    Book_Title = "The Lost Symbol" 
-
-UPDATE   `booklists.robert_langdon_series` 
-SET      Book_Order = 4,
-         Deuteragonist = "Sienna Brooks",
-WHERE    Book_Title = "Inferno"
-
-UPDATE   `booklists.robert_langdon_series` 
-SET      Book_Order = 5,
-         Deuteragonist = "Ambra Vidal",
-WHERE    Book_Title = "Origin"
-
-
+ORDER BY Reading_Order
 
 
 ----------
 
 
-SELECT   Book_Author, Book_Order, Book_Title, Page_Count, SPLIT(Setting_Country, ", ") AS Setting_Country
+SELECT   SPLIT(SUBSTR(Book_Theme, (23+2), (40-23+2)), "; ") Settings
+FROM     `booklists.books_2020`
+WHERE    Original_Title = "The Lost Symbol"
+
+UPDATE   `booklists.robert_langdon_series` 
+SET      Book_Order = 3, Deuteragonist = "Katherine Solomon",
+         Setting_City = "Washington, D.C.", Setting_Country = "United States"
+WHERE    Book_Title = "The Lost Symbol" 
+
+
+----------
+
+
+SELECT   SPLIT(SUBSTR(Book_Theme, (35+2), (69-35+2)), "; ") Settings
+FROM     `booklists.books_2020`
+WHERE    Book_Title = "Inferno"
+
+UPDATE   `booklists.robert_langdon_series` 
+SET      Book_Order = 4, Deuteragonist = "Sienna Brooks",
+         Setting_City = "Florence, Istanbul", Setting_Country = "Italy, Turkey",
+         Box_Office = 219519367
+WHERE    Book_Title = "Inferno"
+
+
+----------
+
+
+SELECT   SPLIT(SUBSTR(Book_Theme, (19+2), (62-19+2)), "; ") Settings
+FROM     `booklists.books_2020`
+WHERE    Book_Title = "Origin"
+
+UPDATE   `booklists.robert_langdon_series` 
+SET      Book_Order = 5, Deuteragonist = "Ambra Vidal",
+         Setting_City = "Barcelona, Bilbao, Madrid, Seville", Setting_Country = "Spain"
+WHERE    Book_Title = "Origin"
+
+
+----------
+
+
+SELECT   Movie_Adaptation, INSTR(Movie_Adaptation, " (") Title_End, LENGTH(Movie_Adaptation) Num_char
+FROM     `booklists.robert_langdon_series`
+WHERE    Movie_Adaptation IS NOT NULL
+
+SELECT   SUBSTR(Movie_Adaptation, (8+2), 4) AS Year,
+         LEFT(Movie_Adaptation, 8) AS Movie, 
+         CONCAT(FORMAT("%'d", Box_Office), "$") AS Box_Office,
+         SPLIT(Setting_Country, ", ") AS Locations
+FROM     `booklists.robert_langdon_series`
+WHERE    Movie_Adaptation IS NOT NULL AND LENGTH(Movie_Adaptation) = 14
+UNION ALL
+SELECT   SUBSTR(Movie_Adaptation, (18+2), 4) AS Year,
+         LEFT(Movie_Adaptation, 18) AS Movie, 
+         CONCAT(FORMAT("%'d", Box_Office), "$") AS Box_Office,
+         SPLIT(Setting_Country, ", ") AS Locations
+FROM     `booklists.robert_langdon_series`
+WHERE    Movie_Adaptation IS NOT NULL AND LENGTH(Movie_Adaptation) = 24
+UNION ALL
+SELECT   SUBSTR(Movie_Adaptation, (16+2), 4) AS Year,
+         LEFT(Movie_Adaptation, 16) AS Movie, 
+         CONCAT(FORMAT("%'d", Box_Office), "$") AS Box_Office,
+         SPLIT(Setting_Country, ", ") AS Locations
+FROM     `booklists.robert_langdon_series`
+WHERE    Movie_Adaptation IS NOT NULL AND LENGTH(Movie_Adaptation) = 22
+ORDER BY Year
+
+
+----------
+
+
+/*
+SELECT   Book_Title, SPLIT(Setting_City, ", ") AS Locations 
 FROM     `booklists.robert_langdon_series`
 ORDER BY Book_Order
 
-SELECT *
+----- «Washington, D.C.» IS NOT SUPPOSED TO BE SEPERATED.
+
+SELECT   Book_Title, SPLIT(Setting_City, ", ") AS Locations
 FROM     `booklists.robert_langdon_series`
+WHERE    Setting_Country <> "United States"
+UNION ALL
+SELECT   Book_Title, Setting_City AS Locations
+FROM     `booklists.robert_langdon_series`
+WHERE    Setting_Country = "United States"
+ORDER BY Book_Order
 
-ALTER TABLE   `booklists.books_2018` 
-RENAME COLUMN Setting_Place TO Movie_Adaptation
+----- UNION ALL OR INTERSECT ALL ARE NOT APPLICABLE; INCOMPATIBLE TYPES DUE TO SPLIT() – ARRAY<STRING>, STRING.
+*/
 
 
+UPDATE   `booklists.robert_langdon_series`
+SET      Setting_City = REPLACE(Setting_City, ",", ";")
+WHERE    Setting_Country <> "United States"
+
+SELECT   Book_Title, SPLIT(Setting_City, "; ") AS Locations 
+FROM     `booklists.robert_langdon_series`
+ORDER BY Book_Order
 
 
+----------
 
 
 
