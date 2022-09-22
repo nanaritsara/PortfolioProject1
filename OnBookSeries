@@ -1,6 +1,6 @@
 /*
 OBJECTIVE: BOOK SERIES
-SHOWCASE: CASE STATEMENTS, NUMERIC FUNCTIONS, STRING FUNCTIONS.
+SHOWCASE: CASE STATEMENTS, NUMERIC FUNCTIONS, STRING FUNCTIONS
 */
 
 
@@ -23,6 +23,9 @@ CREATE TABLE   `booklists.bridgerton_series`
           Deuteragonist_Age INTEGER)
 
 
+----------
+
+
 INSERT INTO   `booklists.bridgerton_series` 
          (Book_Author, Book_Serie, Book_Title, Page_Count)
 SELECT   Book_Author, Book_Series, Book_Title, Page_Counts
@@ -40,74 +43,39 @@ WHERE    Book_Series = "Bridgerton"
 
 
 UPDATE   `booklists.bridgerton_series` 
-SET      Book_Order = 1,
-         Protagonist = "Daphne",
-         Protagonist_Gender = "F",
-         Protagonist_Age = 21,
-         Deuteragonist = "Simon Basset",
-         Deuteragonist_Gender = "M",
-         Deuteragonist_Age = 29
+SET      Book_Order = 1, Protagonist = "Daphne", Protagonist_Gender = "F", Protagonist_Age = 21,
+         Deuteragonist = "Simon Basset", Deuteragonist_Gender = "M", Deuteragonist_Age = 29
 WHERE    Book_Title = "The Duke and I"
 
 UPDATE   `booklists.bridgerton_series` 
-SET      Book_Order = 2,
-         Protagonist = "Anthony",
-         Protagonist_Gender = "M",
-         Protagonist_Age = 29,
-         Deuteragonist = "Kate Sheffield",
-         Deuteragonist_Gender = "F",
-         Deuteragonist_Age = 21
+SET      Book_Order = 2, Protagonist = "Anthony", Protagonist_Gender = "M", Protagonist_Age = 29,
+         Deuteragonist = "Kate Sheffield", Deuteragonist_Gender = "F", Deuteragonist_Age = 21
 WHERE    Book_Title = "The Viscount Who Loved Me"
 
 UPDATE   `booklists.bridgerton_series` 
-SET      Book_Order = 3,
-         Protagonist = "Benedict",
-         Protagonist_Gender = "M",
-         Protagonist_Age = 30,
-         Deuteragonist = "Sophie Beckett",
-         Deuteragonist_Gender = "F",
-         Deuteragonist_Age = 22
+SET      Book_Order = 3, Protagonist = "Benedict", Protagonist_Gender = "M", Protagonist_Age = 30,
+         Deuteragonist = "Sophie Beckett", Deuteragonist_Gender = "F", Deuteragonist_Age = 22
 WHERE    Book_Title = "An Offer From A Gentleman"
 
 UPDATE   `booklists.bridgerton_series` 
-SET      Book_Order = 4,
-         Protagonist = "Colin",
-         Protagonist_Gender = "M",
-         Protagonist_Age = 33,
-         Deuteragonist = "Penelope Featherington",
-         Deuteragonist_Gender = "F",
-         Deuteragonist_Age = 28
+SET      Book_Order = 4, Protagonist = "Colin", Protagonist_Gender = "M", Protagonist_Age = 33,
+         Deuteragonist = "Penelope Featherington", Deuteragonist_Gender = "F", Deuteragonist_Age = 28
 WHERE    Book_Title = "Romancing Mr. Bridgerton"
 
 UPDATE   `booklists.bridgerton_series` 
-SET      Book_Order = 5,
-         Protagonist = "Eloise",
-         Protagonist_Gender = "F",
-         Protagonist_Age = 28,
-         Deuteragonist = "Phillip Crane",
-         Deuteragonist_Gender = "M",
-         Deuteragonist_Age = 30
+SET      Book_Order = 5, Protagonist = "Eloise", Protagonist_Gender = "F", Protagonist_Age = 28,
+         Deuteragonist = "Phillip Crane", Deuteragonist_Gender = "M", Deuteragonist_Age = 30
 WHERE    Book_Title = "To Sir Phillip, With Love"
 
 
 UPDATE   `booklists.bridgerton_series` 
-SET      Book_Order = 6,
-         Protagonist = "Francesca",
-         Protagonist_Gender = "F",
-         Protagonist_Age = 26,
-         Deuteragonist = "Michael Stirling",
-         Deuteragonist_Gender = "M",
-         Deuteragonist_Age = 33
+SET      Book_Order = 6, Protagonist = "Francesca", Protagonist_Gender = "F", Protagonist_Age = 26,
+         Deuteragonist = "Michael Stirling", Deuteragonist_Gender = "M", Deuteragonist_Age = 33
 WHERE    Book_Title = "When He Was Wicked"
 
 UPDATE   `booklists.bridgerton_series` 
-SET      Book_Order = 7,
-         Protagonist = "Hyacinth",
-         Protagonist_Gender = "F",
-         Protagonist_Age = 22,
-         Deuteragonist = "Gareth St. Clair",
-         Deuteragonist_Gender = "M",
-         Deuteragonist_Age = 28
+SET      Book_Order = 7, Protagonist = "Hyacinth", Protagonist_Gender = "F", Protagonist_Age = 22,
+         Deuteragonist = "Gareth St. Clair", Deuteragonist_Gender = "M", Deuteragonist_Age = 28
 WHERE    Book_Title = "It's In His Kiss"
 
 
@@ -119,8 +87,7 @@ INSERT INTO    `booklists.bridgerton_series`
           Protagonist, Protagonist_Gender, Protagonist_Age, 
           Deuteragonist, Deuteragonist_Gender, Deuteragonist_Age)
 VALUES   ("Julia Quinn", "Bridgerton", 8, "On The Way To The Wedding", 496,
-          "Gregory", "M", 26,
-          "Lucy Abernathy", "F", 20)
+          "Gregory", "M", 26, "Lucy Abernathy", "F", 20)
 
 
 ----------
@@ -185,36 +152,36 @@ CREATE TABLE   `booklists.robert_langdon_series`
           Page_Count INTEGER,
           Protagonist STRING,
           Deuteragonist STRING,
-          Tritagonist STRING,
           Setting_City STRING,
           Setting_Country STRING,
-          Key_Artwork STRING)
+          Movie_Adaptation STRING,
+          Box_Office INTEGER)
+
+
+----------
 
 
 INSERT INTO   `booklists.robert_langdon_series` 
-         (Book_Author, Book_Serie, Book_Title, Page_Count)
-SELECT   Book_Author, Book_Series, Book_Title, Page_Counts
+         (Book_Author, Book_Serie, Book_Title, Page_Count, Movie_Adaptation)
+SELECT   Book_Author, Book_Series, Book_Title, Page_Counts, Movie_Adaptation
 FROM     `booklists.books_2019` 
 WHERE    Book_Series = "Robert Langdon" 
 
-
 INSERT INTO   `booklists.robert_langdon_series` 
-         (Book_Author, Book_Serie, Book_Title, Page_Count)
-SELECT   Book_Author, Book_Series, Book_Title, Page_Counts
+         (Book_Author, Book_Serie, Book_Title, Page_Count, Movie_Adaptation)
+SELECT   Book_Author, Book_Series, Book_Title, Page_Counts, Movie_Adaptation
 FROM     `booklists.books_2020` 
-WHERE    Book_Series = "Robert Langdon
-
-UPDATE   `booklists.robert_langdon_series` 
-SET      Book_Title = 
-         (SELECT  Original_Title 
-          FROM    `booklists.books_2020`
-          WHERE   Book_Title = "Das verlorene Symbol") 
-WHERE    Book_Title = "Das verlorene Symbol"    
-
+WHERE    Book_Series = "Robert Langdon" AND Reading_Language = "English"
 
 INSERT INTO   `booklists.robert_langdon_series` 
-         (Book_Author, Book_Serie, Book_Title, Page_Count)
-SELECT   Book_Author, Book_Series, Book_Title, Page_Counts
+         (Book_Author, Book_Serie, Book_Title, Page_Count, Movie_Adaptation)
+SELECT   Book_Author, Book_Series, Original_Title, Page_Counts, Movie_Adaptation
+FROM     `booklists.books_2020` 
+WHERE    Book_Series = "Robert Langdon" AND Reading_Language = "German"
+
+INSERT INTO   `booklists.robert_langdon_series` 
+         (Book_Author, Book_Serie, Book_Title, Page_Count, Movie_Adaptation)
+SELECT   Book_Author, Book_Series, Original_Title, Page_Counts, Movie_Adaptation
 FROM     `booklists.books_years_unknown`
 WHERE    Book_Series = "Robert Langdon" 
 
@@ -230,49 +197,66 @@ WHERE    Book_Serie = "Robert Langdon"
 ----------
 
 
-UPDATE   `booklists.robert_langdon_series` 
-SET      Book_Order = 1,
-         Deuteragonist = "Vittoria Vetra",
-         Tritagonist = "Camerlengo Carlo Ventresca, Maximilian Kohler",
-         Setting_City = "Rome, Vatican City",
-         Setting_Country = "Italy",
-WHERE    Book_Title = "Angels & Demons" 
+SELECT   Book_Title, Book_Theme, LENGTH(Book_Theme) Num_Char, INSTR(Book_Theme, ";") Position
+FROM     `booklists.books_2019` 
+WHERE    Book_Series = "Robert Langdon"
+
+SELECT   SPLIT(SUBSTR(Book_Theme, (40+2), (66-40+2)), ", ") Settings
+FROM     `booklists.books_2019` 
+WHERE    Book_Series = "Robert Langdon"
 
 UPDATE   `booklists.robert_langdon_series` 
-SET      Book_Order = 2,
-         Deuteragonist = "Sophie Neveu",
-         Tritagonist = "Silas, Sir Leigh Teabing",
-         Setting_City = "Condécort, London, Paris, Rosslyn",
-         Setting_Country = "France, Scotland, United Kingdom",
-         Key_Artwork = "Leonardo da Vinci: Madonna of the Rocks, Mona Lisa, The Last Supper, Vitruvian Man"
+SET      Book_Order = 1, Deuteragonist = "Vittoria Vetra",
+         Setting_City = "Rome, Vatican City", Setting_Country = "Italy",
+         Box_Office = 485930810
+WHERE    Book_Title = "Angels & Demons" 
+
+
+----------
+
+
+SELECT   Book_Title, Book_Theme, LENGTH(Book_Theme) Num_Char, INSTR(Book_Theme, ";") Position
+FROM     `booklists.books_years_unknown`
+WHERE    Book_Series = "Robert Langdon"
+
+SELECT   SPLIT(SUBSTR(Book_Theme, (11+2), (79-11+2)), "; ") Settings
+FROM     `booklists.books_years_unknown`
+WHERE    Book_Series = "Robert Langdon"
+
+UPDATE   `booklists.robert_langdon_series` 
+SET      Book_Order = 2, Deuteragonist = "Sophie Neveu",
+         Setting_City = "Condécort, London, Paris, Rosslyn", Setting_Country = "France, Scotland, United Kingdom",
+         Box_Office = 767820459
 WHERE    Book_Title = "The Da Vinci Code" 
+
+
+----------
+
+
+SELECT   Book_Title, Book_Theme, LENGTH(Book_Theme) Num_Char, INSTR(Book_Theme, ";") As Position
+FROM     `booklists.books_2020`
+WHERE    Book_Series = "Robert Langdon"
+
+
+
+
 
 UPDATE   `booklists.robert_langdon_series` 
 SET      Book_Order = 3,
          Deuteragonist = "Katherine Solomon",
-         Tritagonist = "Inoue Sato, Mal'akh, Warren Bellamy",
-         Setting_City = "Washington, D.C.",
-         Setting_Country = "United States",
-         Key_Artwork = "Albrecht Dürer: Melancholia I"
 WHERE    Book_Title = "The Lost Symbol" 
 
 UPDATE   `booklists.robert_langdon_series` 
 SET      Book_Order = 4,
          Deuteragonist = "Sienna Brooks",
-         Tritagonist = "Bertrand Zobrist, Elizabeth Sinskey",
-         Setting_City = "Florence, Istanbul",
-         Setting_Country = "Italy, Turkey",
-         Key_Artwork = "Dante Alighieri: Divine Comedy, Giorgio Vasari: The Battle of Marciano, Sandro Botticelli: Map of Hell"
 WHERE    Book_Title = "Inferno"
 
 UPDATE   `booklists.robert_langdon_series` 
 SET      Book_Order = 5,
          Deuteragonist = "Ambra Vidal",
-         Tritagonist = "Admiral Luis Ávila, Bishop Antonio Valdespino, Edmond Kirsch, Winston",
-         Setting_City = "Bilbao, Catalonia",
-         Setting_Country = "Spain",
-         Key_Artwork = "William Blake: The Ancient of Days"
 WHERE    Book_Title = "Origin"
+
+
 
 
 ----------
@@ -281,6 +265,21 @@ WHERE    Book_Title = "Origin"
 SELECT   Book_Author, Book_Order, Book_Title, Page_Count, SPLIT(Setting_Country, ", ") AS Setting_Country
 FROM     `booklists.robert_langdon_series`
 ORDER BY Book_Order
+
+SELECT *
+FROM     `booklists.robert_langdon_series`
+
+ALTER TABLE   `booklists.books_2018` 
+RENAME COLUMN Setting_Place TO Movie_Adaptation
+
+
+
+
+
+
+
+
+
 
 
 
