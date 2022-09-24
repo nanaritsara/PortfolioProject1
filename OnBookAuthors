@@ -1,6 +1,6 @@
 /*
 OBJECTIVE: BOOK AUTHORS
-SHOWCASE: CALCULATIONS, STRING FUNCTIONS
+DATA EXPLORATION STARTS AT 1170.
 */
 
 
@@ -22,6 +22,11 @@ CREATE TABLE   `booklists.writers`
 
 
 ----- SELECT    LENGTH("Asian"), LENGTH("Black"), LENGTH("White") [5]
+
+
+
+
+
 
 
 
@@ -251,6 +256,76 @@ WHERE     First_Name IN ("Malala", "Rupi")
 
 
 
+---------------------------------------------------------------------------
+
+
+SELECT    DISTINCT Book_Author, Author_Gender, Author_From, Author_Ethnicity, COUNT(Book_Title) AS Book_Counts 
+FROM      `booklists.books_2019`
+WHERE     Author_Ethnicity LIKE "%European%"
+GROUP BY  Book_Author, Author_Gender, Author_From, Author_Ethnicity
+ORDER BY  Book_Counts DESC
+
+
+----- INSERT INTO BASED ON [Living: TRUE], [Deceased: FALSE] AND [Book_Counts: >1]
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    DISTINCT "J. K.", "Rowling", Author_Gender, Author_From, "Caucasian, European", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 4
+FROM      `booklists.books_2019`
+WHERE     Book_Author LIKE "%Rowling"
+
+
+----- INSERT INTO BASED ON [Living: FALSE], [Deceased: TRUE] AND [Book_Counts: >1]
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    DISTINCT LEFT(Book_Author, INSTR(Book_Author, " ")-1), 
+          SUBSTR(Book_Author, INSTR(Book_Author, " ")+1, LENGTH(Book_Author)-INSTR(Book_Author, " ")), 
+          Author_Gender, Author_From, "Caucasian, European", RIGHT(Author_Ethnicity, 5), FALSE, TRUE, 3
+FROM      `booklists.books_2019`
+WHERE     Book_Author LIKE "%Shakespeare"
+
+
+
+
+
+---------------------------------------------------------------------------
+
+
+SELECT    DISTINCT Book_Author, Author_Gender, Author_From, Author_Ethnicity, COUNT(Book_Title) AS Book_Counts 
+FROM      `booklists.books_2019`
+GROUP BY  Book_Author, Author_Gender, Author_From, Author_Ethnicity
+HAVING     Author_Ethnicity LIKE "%European%" AND Book_Counts = 1
+ORDER BY  Book_Author
+
+
+----- INSERT INTO BASED ON [Living: FALSE] AND [Deceased: TRUE].
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    LEFT(Book_Author, INSTR(Book_Author, " ")-1), 
+          SUBSTR(Book_Author, INSTR(Book_Author, " ")+1, LENGTH(Book_Author)-INSTR(Book_Author, " ")), 
+          Author_Gender, Author_From, "Caucasian, European", RIGHT(Author_Ethnicity, 5), FALSE, TRUE, 1
+FROM      `booklists.books_2019`
+WHERE     Book_Author IN ("Charlotte Brontë", "George Orwell", "Hermann Hesse", "John Steinbeck", 
+                          "Joseph Murphy", "Lewis Carroll", "Louisa May Alcott")
+
+
+----- INSERT INTO BASED ON [Living: FALSE] AND [Deceased: TRUE].
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    LEFT(Book_Author, INSTR(Book_Author, " ")-1), 
+          SUBSTR(Book_Author, INSTR(Book_Author, " ")+1, LENGTH(Book_Author)-INSTR(Book_Author, " ")), 
+          Author_Gender, Author_From, "Caucasian, European", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 1
+FROM      `booklists.books_2019`
+WHERE     Book_Author IN ("Ian McEwan", "Robert Galbraith")
+
+
+
+
+
+
 
 
 
@@ -337,7 +412,6 @@ WHERE     First_Name = "José" AND Nationality = "Brazil"
 UPDATE    `booklists.writers`
 SET       Book_Counts = Book_Counts+1
 WHERE     First_Name = "Paulo"
-
 
 
 
@@ -458,20 +532,35 @@ FROM      `booklists.books_2020`
 WHERE     Author_Ethnicity LIKE "%European%" AND Book_Author NOT LIKE "J.%"
 
 
------ INSERT INTO BASED ON [Ethnicity: European] AND [Book_Counts: >1]. 
+----- UPDATE ON EXISTING [First_Name] AND [Last_Name].
 
-INSERT INTO   `booklists.writers`
-          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
-SELECT    DISTINCT "J. K.", "Rowling", Author_Gender, Author_From, "Caucasian, European", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 4
-FROM      `booklists.books_2020`
-WHERE     Book_Author LIKE "%Rowling"
+UPDATE    `booklists.writers`
+SET       Book_Counts = Book_Counts+4
+WHERE     First_Name = "J. K."
+
+
+
 
 
 ---------------------------------------------------------------------------
 
-SELECT    First_Name, Last_Name, Living, Deceased 
-FROM      `booklists.writers`
-WHERE     Living IS NULL AND Deceased IS NULL
+
+SELECT    DISTINCT Book_Author, Author_Ethnicity, COUNT(Book_Title) AS Book_Counts 
+FROM      `booklists.books_2020`
+WHERE     Author_Ethnicity LIKE "African%"
+GROUP BY  Book_Author, Author_Ethnicity
+ORDER BY  Book_Counts
+
+
+----- INSERT INTO BASED ON [Ethnicity: African American] AND [Book_Counts: >1]. 
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    DISTINCT LEFT(Book_Author, INSTR(Book_Author, " ")-1), 
+          SUBSTR(Book_Author, INSTR(Book_Author, " ")+1, LENGTH(Book_Author)-INSTR(Book_Author, " ")), 
+          Author_Gender, Author_From, "African American", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 2
+FROM      `booklists.books_2020`
+WHERE     Author_Ethnicity LIKE "African%"
 
 
 
@@ -707,7 +796,6 @@ WHERE     Book_Author LIKE "%Hicks%" OR
           Book_Author IN ("Julia Cameron", "Laura Lynne Jackson", "Marianne Williamson")
 
 
-
 ----- INSERT INTO BASED ON [Ethnicity: North American], [Living: FALSE] AND [Deceased: TRUE].
 
 INSERT INTO   `booklists.writers`
@@ -784,5 +872,303 @@ WHERE     Book_Author LIKE "%Barker"
 
 
 
+
+
+
+---------------------------------------------------------------------------
+----- YEARS_UNKNOW
+---------------------------------------------------------------------------
+
+
+SELECT    DISTINCT Book_Author, Author_Gender, Author_From, Author_Ethnicity, COUNT(Book_Title) AS Book_Counts 
+FROM      `booklists.books_years_unknown`
+GROUP BY  Book_Author, Author_Gender, Author_From, Author_Ethnicity
+ORDER BY  Book_Counts 
+
+
+----- UPDATE EXISTING [First_Name] AND [Last_Name].
+
+UPDATE    `booklists.writers`
+SET       Book_Counts = Book_Counts +1
+WHERE     Last_Name IN ("Brown", "Carroll",  "Galbraith", "Grisham", "Hesse", "Shakespeare")
+
+UPDATE    `booklists.writers`
+SET       Book_Counts = Book_Counts +2
+WHERE     Last_Name IN ("Austen", "Murakami")
+
+UPDATE    `booklists.writers`
+SET       Book_Counts = Book_Counts +3
+WHERE     Last_Name IN ("Ahern", "Coelho")
+
+
+
+
+
+---------------------------------------------------------------------------
+
+
+SELECT    DISTINCT Book_Author, Author_Gender, Author_From, Author_Ethnicity, COUNT(Book_Title) AS Book_Counts 
+FROM      `booklists.books_years_unknown`
+WHERE     Author_Ethnicity LIKE "%Asian%" OR Author_Ethnicity LIKE "%Eurasian%" 
+GROUP BY  Book_Author, Author_Gender, Author_From, Author_Ethnicity
+ORDER BY  Author_Ethnicity
+
+
+----- INSERT INTO BASED ON [Ethnicity: Asian], [Living: TRUE] AND [Deceased: FALSE].
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    LEFT(Book_Author, INSTR(Book_Author, " ")-1), 
+          SUBSTR(Book_Author, INSTR(Book_Author, " ")+1, LENGTH(Book_Author)-INSTR(Book_Author, " ")), 
+          Author_Gender, Author_From, "East Asian", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 1
+FROM      `booklists.books_years_unknown`
+WHERE     Book_Author LIKE "Banana%" 
+
+
+----- INSERT INTO BASED ON [Ethnicity: Eurasian], [Living: FALSE] AND [Deceased: TRUE].
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    LEFT(Book_Author, INSTR(Book_Author, " ")-1), 
+          SUBSTR(Book_Author, INSTR(Book_Author, " ")+1, LENGTH(Book_Author)-INSTR(Book_Author, " ")), 
+          Author_Gender, Author_From, "Eurasian", RIGHT(Author_Ethnicity, 5), FALSE, TRUE, 1
+FROM      `booklists.books_years_unknown`
+WHERE     Book_Author LIKE "Vladimir%" 
+
+
+
+
+
+---------------------------------------------------------------------------
+
+
+SELECT    DISTINCT Book_Author, Author_Gender, Author_From, Author_Ethnicity, COUNT(Book_Title) AS Book_Counts 
+FROM      `booklists.books_years_unknown`
+WHERE     Author_Ethnicity LIKE "%American%"
+GROUP BY  Book_Author, Author_Gender, Author_From, Author_Ethnicity
+ORDER BY  Book_Counts DESC
+
+
+----- INSERT INTO BASED ON [First_Name: George R. R.]. [Book_Counts: 5] IS BASED ON [Original_Language].
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    DISTINCT "George R. R.", RIGHT(Book_Author, 6), Author_Gender, Author_From, 
+          "Caucasian, North American", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 5
+FROM      `booklists.books_years_unknown`
+WHERE     Book_Author LIKE "%Martin" 
+
+
+----- INSERT INTO BASED ON [Ethnicity: North American] AND [Book_Counts: >1].
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    DISTINCT LEFT(Book_Author, INSTR(Book_Author, " ")-1), 
+          SUBSTR(Book_Author, INSTR(Book_Author, " ")+1, LENGTH(Book_Author)-INSTR(Book_Author, " ")), 
+          Author_Gender, Author_From, "Caucasian, North American", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 3
+FROM      `booklists.books_years_unknown`
+WHERE     Book_Author LIKE "Suzanne%" 
+
+
+----- INSERT INTO BASED ON [Ethnicity: Euro American].
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    LEFT(Book_Author, INSTR(Book_Author, "n ")), RIGHT(Book_Author, 7), Author_Gender, Author_From, 
+          "Anglo American, Caucasian, Euro American", RIGHT(Author_Ethnicity, 5), FALSE, TRUE, 1
+FROM      `booklists.books_years_unknown`
+WHERE     Book_Author LIKE "%Burnett" 
+
+
+
+
+
+---------------------------------------------------------------------------
+
+
+SELECT    DISTINCT Book_Author, Author_Gender, Author_From, Author_Ethnicity, COUNT(Book_Title) AS Book_Counts 
+FROM      `booklists.books_years_unknown`
+GROUP BY  Book_Author, Author_Gender, Author_From, Author_Ethnicity
+HAVING    Book_Author NOT LIKE "%Brown" AND Book_Author NOT LIKE "%Grisham" AND 
+          Author_Ethnicity LIKE "%North American%" AND Book_Counts < 2 
+ORDER BY  Book_Counts DESC
+
+
+----- INSERT INTO BASED ON [Ethnicity: North American], [Living: TRUE] AND [Deceased: FALSE].
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    LEFT(Book_Author, INSTR(Book_Author, " ")-1), 
+          SUBSTR(Book_Author, INSTR(Book_Author, " ")+1, LENGTH(Book_Author)-INSTR(Book_Author, " ")), 
+          Author_Gender, Author_From, "Caucasian, Euro American", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 1
+FROM      `booklists.books_years_unknown`
+WHERE     Book_Author IN ("R. J. Anderson", "Gillian Flynn", "Stacey Lee", "Sophia Amouroso")
+
+
+----- INSERT INTO BASED ON [Ethnicity: North American], [Living: FALSE] AND [Deceased: TRUE].
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    LEFT(Book_Author, INSTR(Book_Author, " ")-1), 
+          SUBSTR(Book_Author, INSTR(Book_Author, " ")+1, LENGTH(Book_Author)-INSTR(Book_Author, " ")), 
+          Author_Gender, Author_From, "Caucasian, Euro American", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 1
+FROM      `booklists.books_years_unknown`
+WHERE     Book_Author IN ("F. Scott Fitzgerald", "Harper Lee", "L. Frank Baum")
+
+
+
+
+
+---------------------------------------------------------------------------
+
+
+SELECT    First_Name, Last_Name
+FROM      `booklists.writers`
+WHERE     First_Name IN ("F.", "L.", "R.")
+
+----- DATA CLEANING ON [First_Name] AND [Last_Name].
+
+UPDATE    `booklists.writers`
+SET       First_Name = CONCAT(First_Name, " ", LEFT(Last_Name, INSTR(Last_Name, " ")-1)),
+          Last_Name = SUBSTR(Last_Name, INSTR(Last_Name, " ")+1, LENGTH(Last_Name)-INSTR(Last_Name, " "))
+WHERE     First_Name = "F."
+
+UPDATE    `booklists.writers`
+SET       First_Name = CONCAT(First_Name, " ", LEFT(Last_Name, INSTR(Last_Name, " ")-1)),
+          Last_Name = SUBSTR(Last_Name, INSTR(Last_Name, " ")+1, LENGTH(Last_Name)-INSTR(Last_Name, " "))
+WHERE     First_Name = "L."
+
+UPDATE    `booklists.writers`
+SET       First_Name = CONCAT(First_Name, " ", LEFT(Last_Name, 2)),
+          Last_Name = RIGHT(Last_Name, 8)
+WHERE     First_Name = "R."
+
+
+
+
+
+---------------------------------------------------------------------------
+
+
+SELECT    DISTINCT Book_Author, Author_Gender, Author_From, Author_Ethnicity, COUNT(Book_Title) AS Book_Counts 
+FROM      `booklists.books_years_unknown`
+WHERE     Author_Ethnicity LIKE "%European%" AND 
+          Book_Author NOT IN ("Cecelia Ahern", "Hermann Hesse", "Jane Austen", "Lewis Carroll", "Robert Galbraith", "Robert Louis Stevenson", "William Shakespeare")
+GROUP BY  Book_Author, Author_Gender, Author_From, Author_Ethnicity
+ORDER BY  Book_Counts DESC
+
+
+----- INSERT INTO BASED ON [Ethnicity: European] AND [Book_Counts: >1]
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    DISTINCT LEFT(Book_Author, 5), RIGHT(Book_Author, 5), Author_Gender, Author_From, 
+          "Caucasian, European", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 3
+FROM      `booklists.books_years_unknown`
+WHERE     Book_Author LIKE "%James"
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    DISTINCT LEFT(Book_Author, INSTR(Book_Author, " ")-1), 
+          SUBSTR(Book_Author, INSTR(Book_Author, " ")+1, LENGTH(Book_Author)-INSTR(Book_Author, " ")),
+          Author_Gender, Author_From, "Caucasian, European", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 2
+FROM      `booklists.books_years_unknown`
+WHERE     Book_Author LIKE "%Süskind"
+
+
+----- INSERT INTO BASED ON [Ethnicity: European], [Living: TRUE] AND [Deceased: FALSE].
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    LEFT(Book_Author, INSTR(Book_Author, " ")-1), 
+          SUBSTR(Book_Author, INSTR(Book_Author, " ")+1, LENGTH(Book_Author)-INSTR(Book_Author, " ")),
+          Author_Gender, Author_From, "Caucasian, European", RIGHT(Author_Ethnicity, 5), TRUE, FALSE, 1
+FROM      `booklists.books_years_unknown`
+WHERE     Book_Author IN ("John Boyne", "Ken Follett", "Matt Haig")
+
+
+----- INSERT INTO BASED ON [Ethnicity: European], [Living: TRUE] AND [Deceased: FALSE].
+
+INSERT INTO   `booklists.writers`
+          (First_Name, Last_Name, Gender, Nationality, Ethnicity, Simple_Classification, Living, Deceased, Book_Counts)
+SELECT    LEFT(Book_Author, INSTR(Book_Author, " ")-1), 
+          SUBSTR(Book_Author, INSTR(Book_Author, " ")+1, LENGTH(Book_Author)-INSTR(Book_Author, " ")),
+          Author_Gender, Author_From, "Caucasian, European", RIGHT(Author_Ethnicity, 5), FALSE, TRUE, 1
+FROM      `booklists.books_years_unknown`
+WHERE     Book_Author IN ("E. T. A. Hoffman", "Oscar Wilde", "Prosper Mérimée")
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------
+
+----- DATA CLEANING ON [First_Name] AND [Last_Name]
+
+UPDATE    `booklists.writers`
+SET       First_Name = CONCAT(First_Name, " ", LEFT(Last_Name, 5)),
+          Last_Name = RIGHT(Last_Name, 7)
+WHERE     First_Name = "E."   
+
+UPDATE    `booklists.writers`
+SET       First_Name = Last_Name,
+          Last_Name = First_Name
+WHERE     First_Name = "Hwang"
+
+UPDATE    `booklists.writers`
+SET       First_Name = CONCAT(First_Name, " ", LEFT(Last_Name, 3)),
+          Last_Name = RIGHT(Last_Name, 6)
+WHERE     First_Name = "Louisa"
+
+
+----- DATA CLEANING ON [Nationality] AND [Ethnicity].
+
+UPDATE    `booklists.writers`
+SET       Ethnicity = "Caucasian, North American"
+WHERE     Nationality = "Canada"
+
+UPDATE    `booklists.writers`
+SET       Nationality = "England"
+WHERE     Nationality = "United Kingdom"
+
+UPDATE    `booklists.writers`
+SET       Nationality = "United States", Ethnicity = "Caucasian, North American"
+WHERE     Last_Name IN ("Alcott", "Amouroso", "Flynn", "Steinbeck")
+
+UPDATE    `booklists.writers`
+SET       Nationality = CONCAT("England, ", SUBSTR(Nationality, INSTR(Nationality, ",")+2, LENGTH(Nationality)-INSTR(Nationality, ",")+1))
+WHERE     Last_Name = "Burnett"
+
+UPDATE    `booklists.writers`
+SET       Nationality = "Wales"
+WHERE     Last_Name = "Follett"
+
+UPDATE    `booklists.writers`
+SET       Ethnicity = "Asian American, Chinese American, East Asian"
+WHERE     First_Name = "Stacey"
+
+
+----- DATA CLEANING ON [Living] AND [Deceased].
+
+UPDATE    `booklists.writers`
+SET       Living = TRUE, Deceased = FALSE
+WHERE     First_Name = "Tiffany"
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------
+----- DATA EXPLORATION
+---------------------------------------------------------------------------
 
 
