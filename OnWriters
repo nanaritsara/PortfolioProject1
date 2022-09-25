@@ -1222,7 +1222,161 @@ WHERE     First_Name = "Tiffany"
 
 
 ---------------------------------------------------------------------------
------ {Q: How many writers are of each gender?}
+----- OBJECTIVE (1): NATIONALITY
+---------------------------------------------------------------------------
+
+
+/*
+SELECT   DISTINCT Nationality, COUNT(Nationality) AS Writers_Amount
+FROM     `booklists.writers`
+GROUP BY Nationality
+ORDER BY Writers_Amount DESC, Nationality
+*/
+
+
+---------- 
+
+SELECT   CONCAT(LEFT(First_Name, 1), ". ", Last_Name) AS Author_Of, SPLIT(Nationality, ", ") Multiple_Origins
+FROM     `booklists.writers`
+WHERE    Nationality LIKE "%,%"
+GROUP BY Nationality, First_Name, Last_Name
+ORDER BY Author_Of
+
+WITH     Including_Dual_Nationality AS
+         (SELECT   DISTINCT Nationality, COUNT(Nationality) AS Writers_Amount
+                   FROM     `booklists.writers`
+                   WHERE    Nationality NOT LIKE "%,%"
+                   GROUP BY Nationality)
+SELECT   Nationality, 
+         CASE 
+         WHEN Nationality = "Canada" Then Writers_Amount + 0.5
+         WHEN Nationality = "England" Then Writers_Amount + 0.5
+         WHEN Nationality = "Germany" Then Writers_Amount + 0.5
+         WHEN Nationality = "India" Then Writers_Amount + (0.5*2)
+         WHEN Nationality = "Switzerland" Then Writers_Amount + 0.5
+         WHEN Nationality = "United States" Then Writers_Amount + (0.5*2)
+         ELSE Writers_Amount
+         END AS Writers_Amount
+FROM     Including_Dual_Nationality
+ORDER BY Writers_Amount DESC, Nationality
+
+
+
+
+
+---------------------------------------------------------------------------
+----- OBJECTIVE (2): AUTHORS' ETHNICITY AND NATIONALITY.
+---------------------------------------------------------------------------
+
+
+SELECT   Simple_Classification AS Ethnicity, COUNT(Simple_Classification) Writers_Amount
+FROM     `booklists.writers` 
+WHERE    Simple_Classification = "Asian" ---------- {A: 11 writers are Asian.} 
+GROUP BY Ethnicity
+UNION ALL
+SELECT   Simple_Classification AS Ethnicity, COUNT(Simple_Classification)
+FROM     `booklists.writers` 
+WHERE    Simple_Classification = "Black" ---------- {A: 6 writers are black.}
+GROUP BY Ethnicity
+UNION ALL
+SELECT   Simple_Classification AS Ethnicity, COUNT(Simple_Classification)
+FROM     `booklists.writers` 
+WHERE    Simple_Classification = "White" ---------- {A: 81 writers are white.}
+GROUP BY Ethnicity
+ORDER BY Ethnicity
+
+
+
+
+
+---------------------------------------------------------------------------
+
+----- EXPLORATION ON [Simple_Classification: Asian].
+
+
+SELECT   DISTINCT Ethnicity, COUNT(Ethnicity) AS Writers_Amount
+FROM     `booklists.writers` 
+WHERE    Simple_Classification = "Asian"
+GROUP BY Ethnicity
+ORDER BY Ethnicity
+
+
+SELECT   Ethnicity, COUNT(Ethnicity)+                               
+         ((SELECT   COUNT(Ethnicity) 
+           FROM     `booklists.writers`
+           WHERE    Ethnicity LIKE "%, East Asian")) Writers_Amount
+FROM     `booklists.writers`
+WHERE    Ethnicity = "East Asian" ---------- {A: 7 writers are East Asian.}
+GROUP BY Ethnicity
+UNION ALL
+SELECT   Ethnicity, COUNT(Ethnicity)+                               
+         ((SELECT   COUNT(Ethnicity) 
+           FROM     `booklists.writers`
+           WHERE    Ethnicity LIKE "%, South Asian")) Writers_Amount
+FROM     `booklists.writers`
+WHERE    Ethnicity = "South Asian" ---------- {A: 3 writers are South Asian.}
+GROUP BY Ethnicity
+UNION ALL
+SELECT   Ethnicity, COUNT(Ethnicity) Writers_Amount                           
+FROM     `booklists.writers`
+WHERE    Ethnicity = "Southeast Asian" ---------- {A: 1 writer is Southeast Asian.}
+GROUP BY Ethnicity
+ORDER BY Writers_Amount  
+
+
+
+
+
+---------------------------------------------------------------------------
+
+----- EXPLORATION ON [Simple_Classification: Black].
+
+
+SELECT   DISTINCT Ethnicity, COUNT(Ethnicity) AS Writers_Amount
+FROM     `booklists.writers` 
+WHERE    Simple_Classification = "Black"
+GROUP BY Ethnicity
+ORDER BY Ethnicity
+
+
+SELECT   Ethnicity, COUNT(Ethnicity) Writers_Amount                           
+FROM     `booklists.writers`
+WHERE    Ethnicity = "African" ---------- {A: 1 writer is African.}
+GROUP BY Ethnicity
+UNION ALL
+SELECT   Ethnicity, COUNT(Ethnicity)+                               
+         ((SELECT   COUNT(Ethnicity) 
+           FROM     `booklists.writers`
+           WHERE    Ethnicity LIKE "African American, %"))
+FROM     `booklists.writers`
+WHERE    Ethnicity = "African American" ---------- {A: 5 writers are African American.}
+GROUP BY Ethnicity
+ORDER BY Writers_Amount  
+
+
+
+
+
+
+---------------------------------------------------------------------------
+
+----- EXPLORATION ON [Simple_Classification: White].
+
+
+SELECT   DISTINCT Nationality, COUNT(Nationality) AS Writers_Amount
+FROM     `booklists.writers` 
+WHERE    Simple_Classification = "White"
+GROUP BY Nationality
+ORDER BY Nationality
+
+
+
+
+
+---------------------------------------------------------------------------
+----- OBJECTIVE (3): AUTHORS' GENDER.
+---------------------------------------------------------------------------
+
 
 /*
 SELECT   (SELECT COUNT(*) FROM `booklists.writers`) AS TotalWriters, 
@@ -1232,7 +1386,7 @@ FROM     `booklists.writers`
 WHERE    Gender = "Female"
 */
 
-WITH Gender_CTE AS 
+WITH     Gender_CTE AS 
          (SELECT   (SELECT COUNT(*) FROM `booklists.writers`) AS TotalWriters, COUNT(Gender) FemaleWriters,
                    (SELECT COUNT(*) FROM `booklists.writers` WHERE Gender = "Male") AS MaleWriters,
           FROM     `booklists.writers`    
@@ -1242,25 +1396,6 @@ SELECT   CONCAT("Altogether, I have read books from ", TotalWriters, " different
                  MaleWriters, " of them are male, which also makes ", MaleWriters*100/TotalWriters, "%. What a coincidence, right?") AS Conclusion
 FROM     Gender_CTE
 
-
-
-
-
----------------------------------------------------------------------------
------ {Q: How many writers are Asian, black or white?}
-
-SELECT   CONCAT("Asian: ", COUNT(Simple_Classification)) Writers_By_Ethnicity
-FROM     `booklists.writers` 
-WHERE    Simple_Classification = "Asian"
-UNION ALL
-SELECT   CONCAT("Black: ", COUNT(Simple_Classification))
-FROM     `booklists.writers` 
-WHERE    Simple_Classification = "Black"
-UNION ALL
-SELECT   CONCAT("White: ", COUNT(Simple_Classification))
-FROM     `booklists.writers` 
-WHERE    Simple_Classification = "White"
-ORDER BY Writers_By_Ethnicity
 
 
 
