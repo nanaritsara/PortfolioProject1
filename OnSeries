@@ -26,7 +26,12 @@ CREATE TABLE   `booklists.bridgerton_series`
           Deuteragonist_Age INTEGER)
 
 
-----------
+
+
+
+---------------------------------------------------------------------------
+
+----- INSERT INTO FROM INITIAL TABLES.
 
 
 INSERT INTO   `booklists.bridgerton_series` 
@@ -42,7 +47,12 @@ FROM     `booklists.books_2022`
 WHERE    Book_Series = "Bridgerton"
 
 
-----------
+
+
+
+---------------------------------------------------------------------------
+----- DATA COMPLETION
+---------------------------------------------------------------------------
 
 
 UPDATE   `booklists.bridgerton_series` 
@@ -93,7 +103,12 @@ VALUES   ("Julia Quinn", "Bridgerton", 8, "On The Way To The Wedding", 496,
           "Gregory", "M", 26, "Lucy Abernathy", "F", 20)
 
 
-----------
+
+
+
+---------------------------------------------------------------------------
+
+----- UPDATE ON [Protagonist].
 
 
 UPDATE   `booklists.bridgerton_series`
@@ -101,7 +116,17 @@ SET      Protagonist = CONCAT(Protagonist, " Bridgerton")
 WHERE    Book_Serie = "Bridgerton"
 
 
-----------
+
+
+
+---------------------------------------------------------------------------
+----- DATA EXPLORATION
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+
+----- OBJECTIVE (1): CHARACTER'S TITLES.
 
 
 SELECT   Book_Title, Protagonist,
@@ -128,7 +153,12 @@ FROM     `booklists.bridgerton_series`
 ORDER BY Protagonist
 
 
-----------
+
+
+
+---------------------------------------------------------------------------
+
+----- OBJECTIVE (2): AGE GAPS BETWEEN [Protagonist] AND [Deuteragonist] OF EACH BOOK.
 
 
 SELECT   Book_Title, Protagonist, Deuteragonist, ABS(Protagonist_Age - Deuteragonist_Age) AS Age_Gap
@@ -136,7 +166,9 @@ FROM     `booklists.bridgerton_series`
 ORDER BY Protagonist
 
 
-----------
+
+
+
 
 
 
@@ -161,7 +193,12 @@ CREATE TABLE   `booklists.robert_langdon_series`
           Box_Office INTEGER)
 
 
-----------
+
+
+
+---------------------------------------------------------------------------
+
+----- INSERT INTO FROM INITIAL TABLES.
 
 
 INSERT INTO   `booklists.robert_langdon_series` 
@@ -188,12 +225,24 @@ SELECT   Book_Author, Book_Series, Original_Title, Page_Counts, Movie_Adaptation
 FROM     `booklists.books_years_unknown`
 WHERE    Book_Series = "Robert Langdon" 
 
+
+
+
+---------------------------------------------------------------------------
+
+----- UPDATE ON [Protagonist].
+
 UPDATE   `booklists.robert_langdon_series` 
 SET      Protagonist = Book_Serie
 WHERE    Book_Serie = "Robert Langdon" 
 
 
-----------
+
+
+
+---------------------------------------------------------------------------
+----- DATA COMPLETION
+---------------------------------------------------------------------------
 
 
 SELECT   Book_Title, Book_Theme, LENGTH(Book_Theme) Num_Char, INSTR(Book_Theme, ";") Position
@@ -278,7 +327,17 @@ SET      Book_Order = 5, Deuteragonist = "Ambra Vidal",
 WHERE    Book_Title = "Origin"
 
 
-----------
+
+
+
+---------------------------------------------------------------------------
+----- DATA EXPLORATION
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+
+----- OBJECTIVE (1): MOVIE ADAPTATIONS.
 
 
 SELECT   Movie_Adaptation, INSTR(Movie_Adaptation, " (") Title_End, LENGTH(Movie_Adaptation) Num_char
@@ -308,7 +367,12 @@ WHERE    Movie_Adaptation IS NOT NULL AND LENGTH(Movie_Adaptation) = 22
 ORDER BY Year
 
 
-----------
+
+
+
+---------------------------------------------------------------------------
+
+----- OBJECTIVE (2): MOVIE ADAPTATIONS.
 
 
 /*
@@ -340,13 +404,7 @@ FROM     `booklists.robert_langdon_series`
 ORDER BY Book_Order
 
 
-----------
 
 
 
-
-
-
-
-
-
+---------------------------------------------------------------------------
