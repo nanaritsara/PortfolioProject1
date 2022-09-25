@@ -1,6 +1,6 @@
 /*
 OBJECTIVE: BOOK AUTHORS
-SHOWCASE: NUMERIC FUNCTIONS, STRING FUNCTIONS
+SHOWCASE: AGGREGATE FUNCTIONS, CTE'S, JOIN'S, STRING FUNCTIONS, SUBQUERIES 
 
 DATA EXPLORATION STARTS AT. 
 */
@@ -1211,6 +1211,56 @@ WHERE     First_Name = "Stacey"
 UPDATE    `booklists.writers`
 SET       Living = TRUE, Deceased = FALSE
 WHERE     First_Name = "Tiffany"
+
+
+
+
+
+---------------------------------------------------------------------------
+----- DATA EXPLORATION
+---------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------
+----- {Q: How many writers are of each gender?}
+
+/*
+SELECT   (SELECT COUNT(*) FROM `booklists.writers`) AS TotalWriters, 
+         COUNT(Gender) FemaleWriters,
+         (SELECT COUNT(*) FROM `booklists.writers` WHERE Gender = "Male") AS MaleWriters
+FROM     `booklists.writers` 
+WHERE    Gender = "Female"
+*/
+
+WITH Gender_CTE AS 
+         (SELECT   (SELECT COUNT(*) FROM `booklists.writers`) AS TotalWriters, COUNT(Gender) FemaleWriters,
+                   (SELECT COUNT(*) FROM `booklists.writers` WHERE Gender = "Male") AS MaleWriters,
+          FROM     `booklists.writers`    
+          WHERE    Gender = "Female")
+SELECT   CONCAT("Altogether, I have read books from ", TotalWriters, " different writers. ",
+                 FemaleWriters, " of them are female, which makes ", FemaleWriters*100/TotalWriters, "%, and ",
+                 MaleWriters, " of them are male, which also makes ", MaleWriters*100/TotalWriters, "%. What a coincidence, right?") AS Conclusion
+FROM     Gender_CTE
+
+
+
+
+
+---------------------------------------------------------------------------
+----- {Q: How many writers are Asian, black or white?}
+
+SELECT   CONCAT("Asian: ", COUNT(Simple_Classification)) Writers_By_Ethnicity
+FROM     `booklists.writers` 
+WHERE    Simple_Classification = "Asian"
+UNION ALL
+SELECT   CONCAT("Black: ", COUNT(Simple_Classification))
+FROM     `booklists.writers` 
+WHERE    Simple_Classification = "Black"
+UNION ALL
+SELECT   CONCAT("White: ", COUNT(Simple_Classification))
+FROM     `booklists.writers` 
+WHERE    Simple_Classification = "White"
+ORDER BY Writers_By_Ethnicity
 
 
 
