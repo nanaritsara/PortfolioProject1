@@ -4,6 +4,9 @@ SHOWCASE: AGGREGATE FUNCTIONS, COMPARISON OPERATORS, CTE'S, STRING FUNCTIONS, SU
 */
 
 
+
+
+
 ---------------------------------------------------------------------------
 ----- [Q: How many book have I read in each language?]
 
@@ -46,9 +49,7 @@ ORDER BY Page_Counts
 /*
 SELECT   Book_Author, Book_Title, Page_Counts
 FROM     `booklists.books_2018`
-WHERE    CAST(Page_Counts AS STRING) NOT LIKE "1_%" AND
-         CAST(Page_Counts AS STRING) NOT LIKE "2_%" AND 
-         Non_Fiction = FALSE
+WHERE    CAST(Page_Counts AS STRING) NOT LIKE "1_%" AND CAST(Page_Counts AS STRING) NOT LIKE "2_%" AND Non_Fiction = FALSE
 ORDER BY Page_Counts
 */
 
@@ -67,6 +68,8 @@ SELECT   Book_Author, Book_Title, Page_Counts
 FROM     `booklists.books_2019`
 WHERE    Page_Counts IN (106, 768)
 ORDER BY Page_Counts
+
+
 
 
 
@@ -97,6 +100,7 @@ FROM     `booklists.books_2019`
 WHERE    Word_Counts IS NOT NULL
 
 ------ [A: 14 out of 33 rows provide data of {Word_Counts}.]
+
 
 SELECT   Book_Title, Page_Counts, Word_Counts,
          ROUND(Word_Counts/Page_Counts) Average_Per_Page
@@ -161,6 +165,7 @@ ORDER BY Book_Counts DESC
 
 
 
+
 ---------------------------------------------------------------------------
 ----- [Q: How many books are written by Asian, Black or White authors?]
 
@@ -178,16 +183,13 @@ WHERE    Author_Ethnicity LIKE "%Asian%"
 
 
 
-
-
-
 ---------------------------------------------------------------------------
 ----- [Q: How many books are written by female authors?]
 
 SELECT   COUNT(Book_Title) AS By_Female_Authors, 
          (SELECT  COUNT(Book_Title) 
-          FROM `booklists.books_2021`
-          WHERE Author_Gender = "M") AS By_Male_Authors
+          FROM    `booklists.books_2021`
+          WHERE   Author_Gender = "M") AS By_Male_Authors
 FROM     `booklists.books_2021`
 WHERE    Author_Gender = "F"
 
@@ -223,7 +225,6 @@ WITH     RobertLangdonSeries AS
 SELECT   Y19_Book_Counts, Y20_Book_Counts, YUK_Book_Counts,
          Y19_Book_Counts + Y20_Book_Counts + YUK_Book_Counts AS Total_Book_Counts
 FROM     RobertLangdonSeries  
-
 
 
 
