@@ -1,6 +1,6 @@
 /*
-OBJECTIVE: BOOK AUTHORS
-SHOWCASE: 
+OBJECTIVE: BOOK SERIES
+SHOWCASE: NUMERIC FUNCTIONS, STRING FUNCTIONS
 */
 
 
@@ -24,7 +24,11 @@ CREATE TABLE   `booklists.writers`
           Book_Counts INTEGER)
 
 
------ SELECT    LENGTH("Asian"), LENGTH("Black"), LENGTH("White") [5]
+/*
+SELECT    LENGTH("Asian"), LENGTH("Black"), LENGTH("White") 
+
+----- [5]
+*/
 
 
 
