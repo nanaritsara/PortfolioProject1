@@ -1,0 +1,99 @@
+Last_Name,First_Name,Gender,Simple_Classification,Nationality,Ethnicity,Living,Deceased,Book_Counts
+,Dr. Seuss,Male,White,United States,"Caucasian, North American",false,true,2
+Aciman,André,Male,White,United States,"Caucasian, Euro American, Italien American",true,false,1
+Ahern,Cecelia,Female,White,Ireland,"Caucasian, European",true,false,4
+Alcott,Louisa May,Female,White,United States,"Caucasian, North American",false,true,1
+Amouroso,Sophia,Female,White,United States,"Caucasian, North American",true,false,1
+Anderson,R. J.,Female,White,Canada,"Caucasian, North American",true,false,1
+Atwood,Margaret,Female,White,Canada,"Caucasian, North American",true,false,1
+Austen,Jane,Female,White,England,"Caucasian, European",false,true,4
+Barker,Pat,Female,White,England,"Caucasian, European",true,false,1
+Barrie,J. M.,Male,White,Scotland,"Caucasian, European",false,true,2
+Baum,L. Frank,Male,White,United States,"Caucasian, North American",true,false,1
+Bernstein,Gabrielle,Female,White,United States,"Caucasian, North American",true,false,2
+Boyne,John,Male,White,Ireland,"Caucasian, European",true,false,1
+Brontë,Charlotte,Female,White,England,"Caucasian, European",false,true,1
+Brown,Dan,Male,White,United States,"Caucasian, North American",true,false,5
+Burnett,Frances Hodgson,Female,White,"England, United States","Anglo American, Caucasian, Euro American",false,true,1
+Byrne,Rhonda,Female,White,Australia,"Australian, Caucasian, Oceanian",true,false,1
+Cameron,Julia,Female,White,United States,"Caucasian, North American",true,false,1
+Capote,Truman,Male,White,United States,"Caucasian, North American",false,true,1
+Carroll,Lewis,Male,White,England,"Caucasian, European",false,true,2
+Choo,Yangze,Female,Asian,Malaysia,Southeast Asian,true,false,2
+Chopra,Deepak,Male,Asian,"India, United States","Asian American, Indian American, South Asian",true,false,1
+Cisneros,Sandra,Female,White,United States,"Caucasian, North American",true,false,1
+Coelho,Paulo,Male,White,Brazil,"Caucasian, Latin American",true,false,9
+Collins,Suzanne,Female,White,United States,"Caucasian, North American",true,false,3
+Covey,Stephen R.,Male,White,United States,"Caucasian, North American",false,true,1
+DiMarco,MaryAnn,Female,White,United States,"Caucasian, Euro American, Italian American",true,false,1
+Dickens,Charles,Male,White,England,"Caucasian, European",false,true,1
+Fitzgerald,F. Scott,Male,White,United States,"Caucasian, North American",true,false,1
+Flynn,Gillian,Female,White,United States,"Caucasian, North American",true,false,1
+Follett,Ken,Male,White,Wales,"Caucasian, European",true,false,1
+Galbraith,Robert,Female,White,England,"Caucasian, European",true,false,2
+Gawain,Shakti,Female,White,United States,"Caucasian, North American",false,true,1
+Gilbert,Elizabeth,Female,White,United States,"Caucasian, North American",true,false,4
+Grahame-Smith,Seth,Male,White,United States,"Caucasian, North American",true,false,1
+Green,John,Male,White,United States,"Caucasian, North American",true,false,3
+Grisham,John,Male,White,United States,"Caucasian, North American",true,false,3
+Guillebeau,Chris,Male,White,United States,"Caucasian, North American",true,false,1
+Haddish,Tiffany,Female,Black,United States,African American,true,false,1
+Haig,Matt,Male,White,England,"Caucasian, European",true,false,1
+Harris,Thomas,Male,White,United States,"Caucasian, North American",true,false,2
+Hawthorne,Nathaniel,Male,White,United States,"Caucasian, North American",false,true,1
+Hemingway,Ernest,Male,White,United States,"Caucasian, North American",false,true,1
+Herrndorf,Wolfgang,Male,White,Germany,"Caucasian, European",true,false,1
+Hesse,Hermann,Male,White,"Germany, Switzerland","Caucasian, European",false,true,2
+Hicks,Jerry,Male,White,United States,"Caucasian, North American",false,true,1
+Hicks,Esther,Female,White,United States,"Caucasian, North American",true,false,1
+Hilton,James,Male,White,England,"Caucasian, European",false,true,1
+Hoffman,E. T. A.,Male,White,Germany,"Caucasian, European",false,true,1
+Holiday,Ryan,Male,White,United States,"Caucasian, North American",true,false,1
+Hollis,Rachel,Female,White,United States,"Caucasian, North American",true,false,2
+Hwang,Soen-Mi,Female,Asian,South Korea,East Asian,true,false,1
+James,E. L.,Female,White,England,"Caucasian, European",true,false,3
+Jay,Meg,Female,White,United States,"Caucasian, North American",true,false,1
+Kang,Han,Female,Asian,South Korea,East Asian,true,false,1
+Kaur,Rupi,Female,Asian,"Canada, India",South Asian,true,false,2
+Kondo,Marie,Female,Asian,Japan,East Asian,true,false,1
+Lawrence,D. H.,Male,White,England,"Caucasian, European",false,true,1
+Lee,Harper,Female,White,United States,"Caucasian, North American",true,false,1
+Lee,Stacey,Female,Asian,United States,"Asian American, Chinese American, East Asian",true,false,1
+Lunde,Maja,Female,White,Norway,"Caucasian, European",true,false,1
+Lynne Jackson,Laura,Female,White,United States,"Caucasian, North American",true,false,1
+Martin,George R. R.,Male,White,United States,"Caucasian, North American",true,false,5
+McEwan,Ian,Male,White,England,"Caucasian, European",true,false,1
+Miller,Madeline,Female,White,United States,"Caucasian, North American",true,false,2
+Morris,Heather,Female,White,New Zealand,"Caucasian, New Zealander, Oceanian",true,false,1
+Murakami,Haruki,Male,Asian,Japan,East Asian,true,false,3
+Murphy,Joseph,Male,White,Ireland,"Caucasian, European",false,true,1
+Márquez,Gabriel García,Male,White,Columbia,"Hispanic, Latin American",false,true,1
+Mérimée,Prosper,Male,White,France,"Caucasian, European",false,true,1
+Ng,Celeste,Female,Asian,United States,"Asian American, Chinese American, East Asian",true,false,2
+Niven,Jennifer,Female,White,United States,"Caucasian, North American",true,false,1
+Noah,Trevor,Male,Black,South Africa,African,true,false,1
+Nobokov,Vladimir,Male,White,Russia,Eurasian,false,true,1
+Noll,Ingrid,Female,White,Germany,"Caucasian, European",true,false,1
+Northrup,Kate,Female,White,United States,"Caucasian, North American",true,false,2
+Northup,Solomon,Male,Black,United States,African American,false,true,1
+Orwell,George,Male,White,England,"Caucasian, European",false,true,1
+Owens,Delia,Female,White,United States,"Caucasian, North American",true,false,1
+Pressfield,Steven,Male,White,United States,"Caucasian, North American",true,false,1
+Quinn,Julia,Female,White,United States,"Caucasian, North American",true,false,7
+Rowling,J. K.,Female,White,England,"Caucasian, European",true,false,8
+Ruiz,Don Miguel,Male,White,Mexico,"Hispanic, Latin American, North American",true,false,2
+Shakespeare,William,Male,White,England,"Caucasian, European",false,true,4
+Steinbeck,John,Male,White,United States,"Caucasian, North American",false,true,1
+Süskind,Patrick,Male,White,Germany,"Caucasian, European",true,false,2
+Walker,Alice,Female,Black,United States,African American,true,false,1
+Westover,Tara,Female,White,United States,"Caucasian, North American",true,false,1
+White,E. B.,Male,White,United States,"Caucasian, North American",false,true,1
+Wilde,Oscar,Male,White,Ireland,"Caucasian, European",false,true,1
+Williamson,Marianne,Female,White,United States,"Caucasian, North American",true,false,1
+Winfrey,Oprah,Female,Black,United States,African American,true,false,2
+Yoon,Nicola,Female,Black,United States,"African American, Jamaican American",true,false,1
+Yoshimoto,Banana,Female,Asian,Japan,East Asian,true,false,1
+Yousafzai,Malala,Female,Asian,Pakistan,South Asian,true,false,1
+Zola,Émile,Male,White,France,"Caucasian, European",false,true,1
+de Saint-Expéry,Antoine,Male,White,France,"Caucasian, European",false,true,1
+de Vasconcelos,José Mauro,Male,White,Brazil,"Caucasian, Latin American",false,true,1
