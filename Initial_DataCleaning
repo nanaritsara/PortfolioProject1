@@ -6,6 +6,7 @@ SHOWCASE: JOIN'S, STRING FUNCTIONS, SUBQUERIES, TABLE ALTERATIONS
 
 
 
+
 ---------------------------------------------------------------------------
 ------ 2018
 ---------------------------------------------------------------------------
@@ -74,11 +75,6 @@ SET      Alternative_Title =
           FROM    `booklists.books_2018`
           WHERE   Book_Title LIKE "%Carol")
 WHERE    Book_Title LIKE "%Pan"
-
-
-
-
-
 
 
 
@@ -159,11 +155,6 @@ WHERE    Book_Title LIKE "%Psyche"
 
 
 
-
-
-
-
-
 ---------------------------------------------------------------------------
 ------ 2020
 ---------------------------------------------------------------------------
@@ -174,6 +165,7 @@ FROM     `booklists.books_2020`
 WHERE    Reading_Order IN (23, 25)
 ORDER BY Reading_Order
 
+
 ----- «The Seven Spiritual Law of Success», «One Hundred Year of Solitude»‹Year› AND ‹Law› SHOULD BE WRITTEN IN PLURAL.
 
 UPDATE   `booklists.books_2020` 
@@ -181,9 +173,13 @@ SET      Book_Title = REPLACE(Book_Title, "Law", "Laws")
          Original_Title = Book_Title
 WHERE    Book_Title LIKE "%Law%"
 
+
 UPDATE   `booklists.books_2020` 
 SET      Book_Title = "One Hundred Years of Solitude"
 WHERE    Reading_Order = 25
+
+
+
 
 
 ---------------------------------------------------------------------------
@@ -216,14 +212,10 @@ WHERE    Book_Title LIKE "%Deathly%"
 
 SELECT   LENGTH("Crime") AS First_Half, LENGTH(", Thriller") AS Second_Half 
 
+
 UPDATE   `booklists.books_2020`
 SET      Book_Genre = CONCAT(SUBSTR(Book_Genre, 1, 5), ", ", Book_Theme, SUBSTR(Book_Genre, 6, 10))
 WHERE    Book_Title = "Inferno"
-
-
-
-
-
 
 
 
@@ -242,7 +234,6 @@ WHERE    Book_Title LIKE "Stillness%" OR
 
 
 ----- «Stillness Is The Key», «Where The Crawdads Sing», «Turtles All The Way Down» | ‹The› SHOULD BE WRITTEN IN LOWERCASE.
-
 
 SELECT   REPLACE(Book_Title, "The", "the") AS Corrected_Titles
 FROM     `booklists.books_2021`
@@ -339,18 +330,15 @@ SET      Book_Type = "Novel, Retelling",
          Book_Genre = "Fantasy, Historical, Mythology"
 WHERE    Book_Author = "Madeline Miller"
 
+
 UPDATE  `booklists.books_2021`
 SET      Book_Theme = "Greek Mythology; 'Iliad'"
 WHERE    Book_Title LIKE "%Achilles"
 
+
 UPDATE  `booklists.books_2021`
 SET      Book_Theme = "Greek Mythology; 'Odyssey'"
 WHERE    Book_Title = "Circe"
-
-
-
-
-
 
 
 
@@ -448,11 +436,6 @@ WHERE     Book_Author = "Julia Quinn" AND Reading_Order = 5
 UPDATE    `booklists.books_2022`
 SET       Alternative_Title = "Bridgerton, Book 7"
 WHERE     Book_Author = "Julia Quinn" AND Alternative_Title LIKE "%7"
-
-
-
-
-
 
 
 
