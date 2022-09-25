@@ -1265,7 +1265,7 @@ ORDER BY Writers_Amount DESC, Nationality
 
 
 ---------------------------------------------------------------------------
------ OBJECTIVE (2): AUTHORS' ETHNICITY AND NATIONALITY.
+----- OBJECTIVE (2): AUTHORS' ETHNICITY
 ---------------------------------------------------------------------------
 
 
@@ -1357,24 +1357,8 @@ ORDER BY Writers_Amount
 
 
 
-
 ---------------------------------------------------------------------------
-
------ EXPLORATION ON [Simple_Classification: White].
-
-
-SELECT   DISTINCT Nationality, COUNT(Nationality) AS Writers_Amount
-FROM     `booklists.writers` 
-WHERE    Simple_Classification = "White"
-GROUP BY Nationality
-ORDER BY Nationality
-
-
-
-
-
----------------------------------------------------------------------------
------ OBJECTIVE (3): AUTHORS' GENDER.
+----- OBJECTIVE (3): AUTHORS' GENDER
 ---------------------------------------------------------------------------
 
 
