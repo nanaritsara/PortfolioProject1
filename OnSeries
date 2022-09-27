@@ -331,6 +331,26 @@ WHERE    Book_Title = "Origin"
 
 
 ---------------------------------------------------------------------------
+
+----- UPDATE ON [Publication].
+
+ALTER TABLE    `booklists.robert_langdon_series`
+ADD      Publication INTEGER
+
+UPDATE   `booklists.robert_langdon_series`
+SET      Publication = CASE
+         WHEN Book_Order = 1 THEN 2000
+         WHEN Book_Order = 2 THEN 2003
+         WHEN Book_Order = 3 THEN 2009
+         WHEN Book_Order = 3 THEN 2013
+         ELSE 2017
+         END
+
+
+
+
+
+---------------------------------------------------------------------------
 ----- DATA EXPLORATION
 ---------------------------------------------------------------------------
 
@@ -407,4 +427,3 @@ ORDER BY Book_Order
 
 
 
----------------------------------------------------------------------------
