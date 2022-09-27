@@ -1389,3 +1389,46 @@ FROM     Gender_CTE
 
 
 
+---------------------------------------------------------------------------
+----- OBJECTIVE (4): AUTHORS' LIVING STATUS.
+---------------------------------------------------------------------------
+
+
+SELECT   COUNT(*) LivingWriters, 
+         (SELECT   COUNT(*) LivingWriters, 
+          FROM     `booklists.writers` 
+          WHERE    Deceased = TRUE) AS DeceasedWriters
+FROM     `booklists.writers` 
+WHERE    Living = TRUE
+
+
+
+
+
+---------------------------------------------------------------------------
+----- OBJECTIVE (5): AUTHORS' GENDER AND RACE.
+---------------------------------------------------------------------------
+
+
+SELECT   COUNT(*) AS Asian_Women,
+         (SELECT  COUNT(*)
+          FROM    `booklists.writers` 
+          WHERE   Simple_Classification = "Asian" AND Gender = "Male") AS Asian_Men,
+         (SELECT  COUNT(*)
+          FROM    `booklists.writers` 
+          WHERE   Simple_Classification = "Black" AND Gender = "Female") AS Black_Women,
+         (SELECT  COUNT(*)
+          FROM    `booklists.writers` 
+          WHERE   Simple_Classification = "Black" AND Gender = "Male") AS Black_Men,
+         (SELECT  COUNT(*)
+          FROM    `booklists.writers` 
+          WHERE   Simple_Classification = "White" AND Gender = "Female") AS White_Women,
+         (SELECT  COUNT(*)
+          FROM    `booklists.writers` 
+          WHERE   Simple_Classification = "White" AND Gender = "Male") AS White_Men
+FROM     `booklists.writers` 
+WHERE    Simple_Classification = "Asian" AND Gender = "Female"
+
+
+
+
