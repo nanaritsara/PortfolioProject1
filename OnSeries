@@ -120,6 +120,29 @@ WHERE    Book_Serie = "Bridgerton"
 
 
 ---------------------------------------------------------------------------
+
+----- UPDATE ON [Publication].
+
+ALTER TABLE    `booklists.bridgerton_series`
+ADD      Publication INTEGER
+
+UPDATE   `booklists.bridgerton_series`
+SET      Publication = CASE
+         WHEN Book_Order = 1 THEN 2000
+         WHEN Book_Order = 2 THEN 2000
+         WHEN Book_Order = 3 THEN 2001
+         WHEN Book_Order = 4 THEN 2002
+         WHEN Book_Order = 5 THEN 2003
+         WHEN Book_Order = 6 THEN 2004
+         WHEN Book_Order = 7 THEN 2005
+         ELSE 2006
+         END
+
+
+
+
+
+---------------------------------------------------------------------------
 ----- DATA EXPLORATION
 ---------------------------------------------------------------------------
 
@@ -342,7 +365,7 @@ SET      Publication = CASE
          WHEN Book_Order = 1 THEN 2000
          WHEN Book_Order = 2 THEN 2003
          WHEN Book_Order = 3 THEN 2009
-         WHEN Book_Order = 3 THEN 2013
+         WHEN Book_Order = 4 THEN 2013
          ELSE 2017
          END
 
