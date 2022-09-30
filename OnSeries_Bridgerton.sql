@@ -13,9 +13,9 @@ SHOWCASE: CASE STATEMENTS, CTE'S, NUMERIC FUNCTIONS, STRING FUNCTIONS, TEMP TABL
 
 
 CREATE TABLE   bridgerton_series
-		(Book_Author VARCHAR(50), Book_Serie VARCHAR(50), Book_Order INTEGER, Book_Title VARCHAR(50), Page_Count INTEGER,
-		 Protagonist VARCHAR(50), Protagonist_Gender VARCHAR(50), Protagonist_Age INTEGER,
-		 Deuteragonist VARCHAR(50), Deuteragonist_Gender VARCHAR(50), Deuteragonist_Age INTEGER)
+	(Book_Author VARCHAR(50), Book_Serie VARCHAR(50), Book_Order INTEGER, Book_Title VARCHAR(50), Page_Count INTEGER,
+	 Protagonist VARCHAR(50), Protagonist_Gender VARCHAR(50), Protagonist_Age INTEGER,
+	 Deuteragonist VARCHAR(50), Deuteragonist_Gender VARCHAR(50), Deuteragonist_Age INTEGER)
 
 
 
@@ -304,4 +304,3 @@ ORDER BY	Best_Value
 
 
 
-SELECT * FROM PortfolioProject_Books.dbo.bridgerton_series
